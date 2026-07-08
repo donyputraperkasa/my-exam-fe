@@ -1,0 +1,16 @@
+export const licenseItems = [
+  { label: "Product", value: "My Exam Mathematics Exam Preparation" },
+  { label: "Edition", value: "Student Learning Platform" },
+  { label: "Product Code", value: "DPP-MYEXAM-STD" },
+  { label: "License ID", value: "DPP-MYEXAM-2026-001" },
+  { label: "Licensed To", value: "My Exam" },
+  { label: "License Type", value: "Original Product License" },
+  { label: "License Status", value: "Verified & Active" },
+  { label: "Registered", value: "Registered Commercial Software" },
+  { label: "Copyright Holder", value: "Dony Putra Perkasa" },
+  { label: "Developer", value: "Dony Putra Perkasa" },
+  { label: "Release Date", value: "08 July 2026" },
+  { label: "Version", value: "1.0.0" },
+  { label: "Support", value: "Official Developer Support" },
+  { label: "Technology", value: "Next.js - NestJS - Prisma - MySQL" },
+];

@@ -1,58 +1,46 @@
-import Link from "next/link";
-import { appRoutes } from "@/lib/routes";
+import { benefitItems } from "@/features/landing/content";
+import { CreatorFooter } from "@/features/landing/creator-footer";
+import { FinalCta } from "@/features/landing/final-cta";
+import { HeroSection } from "@/features/landing/hero-section";
+import { HowItWorks } from "@/features/landing/how-it-works";
+import { MathPattern } from "@/features/landing/math-pattern";
+import { StudentPreview } from "@/features/landing/student-preview";
+import { BookOpenCheck, Calculator, ChartNoAxesCombined } from "lucide-react";
 
-const menuItems = [
-  {
-    title: "Admin",
-    description: "Kelola jenjang, mapel, soal, paket, dan subscription.",
-    href: appRoutes.admin.dashboard,
-  },
-  {
-    title: "Siswa",
-    description: "Kerjakan paket latihan, lihat nilai, dan baca pembahasan.",
-    href: appRoutes.student.dashboard,
-  },
-  {
-    title: "Masuk",
-    description: "Login untuk melanjutkan progres belajar.",
-    href: appRoutes.auth.login,
-  },
-];
+const benefitIcons = [Calculator, BookOpenCheck, ChartNoAxesCombined];
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-6 py-10">
-      <section className="mx-auto flex w-full max-w-5xl flex-col gap-8">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
-            My Exam
-          </p>
-          <h1 className="mt-3 text-4xl font-semibold text-slate-950">
-            Latihan matematika untuk TKA dan ASPD.
-          </h1>
-          <p className="mt-4 text-base leading-7 text-slate-600">
-            Struktur awal frontend sudah siap untuk admin, siswa, auth, dan
-            integrasi API backend.
-          </p>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          {menuItems.map((item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-300"
-            >
-              <h2 className="text-lg font-semibold text-slate-950">
-                {item.title}
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {item.description}
-              </p>
-            </Link>
-          ))}
+    <main className="min-h-screen bg-background text-foreground">
+      <HeroSection />
+      <section className="relative overflow-hidden bg-[#f4f7fb] px-6 py-12">
+        <MathPattern />
+        <div className="relative mx-auto grid w-full max-w-6xl gap-4 md:grid-cols-3">
+          {benefitItems.map((item, index) => {
+            const Icon = benefitIcons[index];
+            return (
+              <article
+                key={item.title}
+                className={`rounded-lg border p-5 shadow-sm ${item.accent}`}
+              >
+                <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <h2 className="text-lg font-semibold text-foreground">
+                  {item.title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {item.description}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </section>
+      <StudentPreview />
+      <HowItWorks />
+      <FinalCta />
+      <CreatorFooter />
     </main>
   );
 }
