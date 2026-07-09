@@ -89,7 +89,7 @@ export function CreatorLicense({ open, onClose }: CreatorLicenseProps) {
         <button
           type="button"
           onClick={onClose}
-          className="mt-5 w-full rounded-full bg-secondary px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-secondary/20 transition hover:bg-[#0b5f59]"
+          className="mt-5 w-full rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/20 transition hover:bg-blue-600"
         >
           Close
         </button>

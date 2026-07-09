@@ -1,11 +1,12 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/lib/routes";
 import { login, register } from "../api";
-import { saveSession } from "../session";
+import { getDashboardPath } from "../redirect";
+import { getToken, getUser, saveSession } from "../session";
 import { AuthField } from "./auth-field";
 import { AuthSwitch } from "./auth-switch";
 
@@ -24,6 +25,15 @@ export function AuthForm({ mode }: AuthFormProps) {
   const [loading, setLoading] = useState(false);
   const isRegister = mode === "register";
 
+  useEffect(() => {
+    const token = getToken();
+    const user = getUser();
+
+    if (token && user) {
+      router.replace(getDashboardPath(user.role));
+    }
+  }, [router]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
@@ -34,11 +44,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         ? await register({ name, email, password })
         : await login({ email, password });
       saveSession(session);
-      router.push(
-        session.user.role === "ADMIN"
-          ? appRoutes.admin.dashboard
-          : appRoutes.student.dashboard,
-      );
+      router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
       setError(
         caughtError instanceof Error ? caughtError.message : "Terjadi kesalahan",
@@ -49,19 +55,19 @@ export function AuthForm({ mode }: AuthFormProps) {
   }
 
   return (
-    <main className="min-h-screen px-6 py-10">
+    <main className="min-h-screen bg-[#f4f7fb] px-6 py-10">
       <section className="mx-auto flex w-full max-w-md flex-col gap-6">
-        <Link href={appRoutes.home} className="text-sm font-medium text-blue-700">
+        <Link href={appRoutes.home} className="text-sm font-bold text-secondary">
           Kembali ke beranda
         </Link>
         <form
           onSubmit={handleSubmit}
-          className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
+          className="rounded-lg border border-border bg-surface p-6 shadow-sm"
         >
-          <h1 className="text-2xl font-semibold text-slate-950">
+          <h1 className="text-2xl font-extrabold text-foreground">
             {isRegister ? "Daftar siswa" : "Masuk"}
           </h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-muted">
             {isRegister
               ? "Buat akun siswa untuk mulai latihan."
               : "Masuk untuk melanjutkan latihan."}
@@ -85,12 +91,12 @@ export function AuthForm({ mode }: AuthFormProps) {
             />
           </div>
 
-          {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+          {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
 
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 h-11 w-full rounded-md bg-blue-700 px-4 text-sm font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-6 h-11 w-full rounded-md bg-primary px-4 text-sm font-bold text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Memproses..." : isRegister ? "Daftar" : "Masuk"}
           </button>
