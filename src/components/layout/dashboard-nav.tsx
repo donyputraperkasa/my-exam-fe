@@ -21,16 +21,18 @@ const navItems = {
     { label: "Dashboard", href: appRoutes.admin.dashboard, Icon: LayoutDashboard },
     { label: "Jenjang", href: appRoutes.admin.grades, Icon: GraduationCap },
     { label: "Mapel", href: appRoutes.admin.subjects, Icon: BookOpenCheck },
-    { label: "Soal", href: appRoutes.admin.questions, Icon: FileQuestion },
+    { label: "Soal dan pembahasan", href: appRoutes.admin.questions, Icon: FileQuestion },
     { label: "Paket", href: appRoutes.admin.packages, Icon: PackageCheck },
     { label: "Subscription", href: appRoutes.admin.subscriptions, Icon: Users },
+    { label: "Private Lesson", href: appRoutes.admin.lessPrivate, Icon: GraduationCap },
   ],
   STUDENT: [
     { label: "Dashboard", href: appRoutes.student.dashboard, Icon: LayoutDashboard },
-    { label: "Paket", href: appRoutes.student.packages, Icon: PackageCheck },
-    { label: "Recap", href: appRoutes.student.recap, Icon: ChartNoAxesCombined },
-    { label: "Subscribe", href: appRoutes.student.subscription, Icon: CreditCard },
-    { label: "Pembahasan", href: appRoutes.student.packages, Icon: ClipboardList },
+    { label: "Paket aktif", href: appRoutes.student.packages, Icon: PackageCheck },
+    { label: "Recap Nilai", href: appRoutes.student.recap, Icon: ChartNoAxesCombined },
+    { label: "Riwayat Subscribe", href: appRoutes.student.subscription, Icon: CreditCard },
+    { label: "Pembahasan Materi", href: appRoutes.student.discussion, Icon: ClipboardList },
+    { label: "Private Lesson", href: appRoutes.student.lessPrivate, Icon: GraduationCap },
   ],
 };
 

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Clock } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
-import { trialQuestions } from "./trial-data";
+import { trialQuestionGeneral } from "./trial-data";
 
 export function TopBar({
   minutes,
@@ -13,8 +13,9 @@ export function TopBar({
 }) {
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-      <Link href={appRoutes.home} className="text-sm font-bold text-primary">
-        Kembali ke beranda
+      <Link href={appRoutes.home} className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+        <ArrowLeft className="h-4 w-4" />
+        <span>Kembali ke beranda</span>
       </Link>
       <div className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-surface/95 px-6 py-3 text-xl font-black shadow-sm">
         <Clock className="h-5 w-5 text-secondary" />
@@ -33,7 +34,7 @@ export function QuestionNav({
 }) {
   return (
     <div className="flex flex-wrap justify-center gap-3">
-      {trialQuestions.map((_, index) => (
+      {trialQuestionGeneral.map((_, index) => (
         <button
           key={index}
           type="button"

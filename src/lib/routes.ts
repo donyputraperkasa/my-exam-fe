@@ -12,11 +12,14 @@ export const appRoutes = {
     questions: "/admin/questions",
     packages: "/admin/packages",
     subscriptions: "/admin/subscriptions",
+    lessPrivate: "/admin/lessPrivate",
   },
   student: {
     dashboard: "/student",
     packages: "/student/packages",
     recap: "/student/recap",
     subscription: "/student/subscription",
+    discussion: "/student/discussion",
+    lessPrivate: "/student/lessPrivate",
   },
 };

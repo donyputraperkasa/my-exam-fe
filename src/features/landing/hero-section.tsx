@@ -42,7 +42,7 @@ export function HeroSection() {
               <button
                 type="button"
                 onClick={() => setIsRegisterOpen(true)}
-                className="rounded-md bg-white px-4 py-2 text-sm font-black text-foreground shadow-sm transition hover:bg-accent"
+                className="rounded-md bg-white px-4 py-2 text-sm font-black text-foreground shadow-sm transition hover:bg-pink-500 hover:text-white"
               >
                 Register
               </button>
@@ -50,7 +50,7 @@ export function HeroSection() {
           </nav>
           <div className="grid items-center gap-8 py-10 md:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-wide text-accent">
+              <p className="text-sm font-semibold uppercase tracking-wide text-pink-400">
                 Belajar serius, rasanya tetap ringan
               </p>
               <h1 className="mt-4 text-4xl font-black leading-tight md:text-6xl">

@@ -27,7 +27,7 @@ export function FinalCta() {
           <button
             type="button"
             onClick={() => setIsRegisterOpen(true)}
-            className="rounded-md bg-white px-5 py-3 text-sm font-black text-foreground shadow-sm transition hover:bg-accent"
+            className="rounded-md bg-white px-5 py-3 text-sm font-black text-foreground shadow-sm transition hover:bg-pink-500 hover:text-white"
           >
             Daftar Sekarang
           </button>

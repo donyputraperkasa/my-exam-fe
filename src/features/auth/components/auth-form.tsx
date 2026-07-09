@@ -9,6 +9,7 @@ import { getDashboardPath } from "../redirect";
 import { getToken, getUser, saveSession } from "../session";
 import { AuthField } from "./auth-field";
 import { AuthSwitch } from "./auth-switch";
+import { ArrowLeft } from "lucide-react";
 
 type AuthMode = "login" | "register";
 
@@ -57,7 +58,8 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <main className="min-h-screen bg-[#f4f7fb] px-6 py-10">
       <section className="mx-auto flex w-full max-w-md flex-col gap-6">
-        <Link href={appRoutes.home} className="text-sm font-bold text-secondary">
+        <Link href={appRoutes.home} className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:underline">
+          <ArrowLeft className="h-4 w-4" />
           Kembali ke beranda
         </Link>
         <form
