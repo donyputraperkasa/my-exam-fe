@@ -6,6 +6,7 @@ import { HowItWorks } from "@/features/landing/how-it-works";
 import { MathPattern } from "@/features/landing/math-pattern";
 import { StudentPreview } from "@/features/landing/student-preview";
 import { BookOpenCheck, Calculator, ChartNoAxesCombined } from "lucide-react";
+import { Analytics } from "@vercel/analytics/next"
 
 const benefitIcons = [Calculator, BookOpenCheck, ChartNoAxesCombined];
 
@@ -41,6 +42,8 @@ export default function HomePage() {
       <HowItWorks />
       <FinalCta />
       <CreatorFooter />
+
+      <Analytics />
     </main>
   );
 }
