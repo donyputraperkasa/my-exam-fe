@@ -4,15 +4,22 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { AppBackground } from "@/components/layout/app-background";
 import { NavButton, QuestionNav, TopBar } from "./trial-controls";
-import { trialQuestionGeneral } from "./trial-data";
+import { TrialQuestionCard } from "./trial-question-card";
 import { TrialResult } from "./trial-result";
+import { getTrialSetup } from "./trial-setup";
 
-export function TrialExam() {
+type TrialExamProps = {
+  embedded?: boolean;
+};
+
+export function TrialExam({ embedded = false }: TrialExamProps) {
+  const [setup] = useState(getTrialSetup);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [current, setCurrent] = useState(0);
   const [seconds, setSeconds] = useState(600);
   const [submitted, setSubmitted] = useState(false);
-  const activeQuestion = trialQuestionGeneral[current];
+  const [trialQuestions] = useState(setup.questions);
+  const activeQuestion = trialQuestions[current];
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -24,11 +31,11 @@ export function TrialExam() {
   const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
   const restSeconds = String(seconds % 60).padStart(2, "0");
   const answeredCount = Object.keys(answers).length;
-  const correctCount = trialQuestionGeneral.filter((item, index) => {
+  const correctCount = trialQuestions.filter((item, index) => {
     return answers[index] === item.answer;
   }).length;
   const incorrectCount = answeredCount - correctCount;
-  const score = trialQuestionGeneral.reduce((total, item, index) => {
+  const score = trialQuestions.reduce((total, item, index) => {
     return total + (answers[index] === item.answer ? 10 : 0);
   }, 0);
 
@@ -43,48 +50,31 @@ export function TrialExam() {
     setSubmitted(false);
   }
 
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-background px-5 py-6 text-foreground">
-      <AppBackground />
-      <section className="relative mx-auto grid w-full max-w-5xl gap-5">
-        <TopBar minutes={minutes} restSeconds={restSeconds} />
-        <QuestionNav current={current} setCurrent={setCurrent} />
-
-
+  const trialContent = (
+    <section className="relative mx-auto grid w-full max-w-5xl gap-5">
+        <TopBar
+          backHref={setup.backHref}
+          backLabel={setup.backLabel}
+          minutes={minutes}
+          restSeconds={restSeconds}
+        />
+        <QuestionNav current={current} setCurrent={setCurrent} total={trialQuestions.length} />
         <div className="relative grid gap-5 rounded-[2rem]">
-          <section className="rounded-[2rem] border border-border bg-surface/95 p-6 text-center shadow-sm md:p-10">
-            <p className="text-sm font-black uppercase tracking-wide text-secondary">
-              Soal {current + 1} dari 10
-            </p>
-            <h1 className="mt-4 text-2xl font-black md:text-4xl">
-              {activeQuestion.question}
-            </h1>
-          </section>
+          <TrialQuestionCard
+            current={current}
+            onSelect={selectAnswer}
+            options={activeQuestion.options}
+            question={activeQuestion.question}
+            selectedAnswer={answers[current]}
+            total={trialQuestions.length}
+          />
 
-          <div className="grid gap-3 md:grid-cols-2">
-            {activeQuestion.options.map((option, index) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => selectAnswer(option)}
-                className={`rounded-xl border px-5 py-4 text-left text-lg font-black shadow-sm transition ${
-                  answers[current] === option
-                    ? "border-primary bg-primary text-white"
-                    : "border-border bg-surface/95 hover:border-primary"
-                }`}
-              >
-                {String.fromCharCode(65 + index)}. {option}
-              </button>
-            ))}
-          </div>
-
-          {/* tombol dibawah soal */}
           <div className="grid gap-3 md:grid-cols-3">
             <NavButton disabled={current === 0} onClick={() => setCurrent(current - 1)}>
               <ArrowLeft className="h-5 w-5" /> Back
             </NavButton>
             <NavButton
-              disabled={current === trialQuestionGeneral.length - 1}
+              disabled={current === trialQuestions.length - 1}
               onClick={() => setCurrent(current + 1)}
             >
               Next <ArrowRight className="h-5 w-5" />
@@ -103,12 +93,23 @@ export function TrialExam() {
               answeredCount={answeredCount}
               correctCount={correctCount}
               incorrectCount={incorrectCount}
+              isAuthenticated={setup.isAuthenticated}
               onRetry={resetTrial}
               score={score}
             />
           ) : null}
         </div>
       </section>
+  );
+
+  if (embedded) {
+    return trialContent;
+  }
+
+  return (
+    <main className="relative min-h-screen overflow-hidden bg-background px-5 py-6 text-foreground">
+      <AppBackground />
+      {trialContent}
     </main>
   );
 }

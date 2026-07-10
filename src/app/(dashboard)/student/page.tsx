@@ -10,8 +10,8 @@ import {
 const studentStats = [
   {
     title: "Soal Gratis",
-    value: "20+",
-    description: "Mulai latihan tanpa subscribe dulu.",
+    value: "10",
+    description: "Coba paket publik sebelum register.",
     Icon: BookOpenCheck,
   },
   {
@@ -50,11 +50,9 @@ export default function StudentPage() {
           <p className="text-sm font-bold uppercase tracking-wide text-secondary">
             Paket Rekomendasi
           </p>
-          <h2 className="mt-3 text-2xl font-extrabold">
-            Numerasi Pemanasan
-          </h2>
+          <h2 className="mt-3 text-2xl font-extrabold">Paket Gratis 10 Soal</h2>
           <p className="mt-2 text-sm leading-6 text-muted">
-            Cocok untuk mulai latihan sebelum masuk paket premium per jenjang.
+            Cocok untuk mencicipi alur latihan sebelum masuk paket premium.
           </p>
           <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#e5edf5]">
             <span className="block h-full w-3/4 rounded-full bg-primary" />

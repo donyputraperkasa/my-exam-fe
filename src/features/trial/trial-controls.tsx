@@ -1,21 +1,23 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, Clock } from "lucide-react";
-import { appRoutes } from "@/lib/routes";
-import { trialQuestionGeneral } from "./trial-data";
 
 export function TopBar({
+  backHref,
+  backLabel,
   minutes,
   restSeconds,
 }: {
+  backHref: string;
+  backLabel: string;
   minutes: string;
   restSeconds: string;
 }) {
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-      <Link href={appRoutes.home} className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
+      <Link href={backHref} className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">
         <ArrowLeft className="h-4 w-4" />
-        <span>Kembali ke beranda</span>
+        <span>{backLabel}</span>
       </Link>
       <div className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-surface/95 px-6 py-3 text-xl font-black shadow-sm">
         <Clock className="h-5 w-5 text-secondary" />
@@ -28,13 +30,15 @@ export function TopBar({
 export function QuestionNav({
   current,
   setCurrent,
+  total,
 }: {
   current: number;
   setCurrent: (index: number) => void;
+  total: number;
 }) {
   return (
     <div className="flex flex-wrap justify-center gap-3">
-      {trialQuestionGeneral.map((_, index) => (
+      {Array.from({ length: total }).map((_, index) => (
         <button
           key={index}
           type="button"

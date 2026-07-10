@@ -1,3 +1,5 @@
+import type { StudentGrade } from "@/types/auth";
+
 export const trialQuestionGeneral = [
   { question: "12 x 8 = ...", options: ["86", "96", "108", "116"], answer: "96" },
   { question: "Hasil dari 144 : 12 adalah ...", options: ["10", "12", "14", "16"], answer: "12" },
@@ -62,3 +64,14 @@ export const trialQuestionSMK = [
   { question: "Persentase 0,75 adalah ...", options: ["25%", "50%", "75%", "80%"], answer: "75%" },
   { question: "Hasil 18 × 12 adalah ...", options: ["196", "206", "216", "226"], answer: "216" },
 ];
+
+const trialByGrade = {
+  SD: trialQuestionSD,
+  SMP: trialQuestionSMP,
+  SMA: trialQuestionSMA,
+  SMK: trialQuestionSMK,
+};
+
+export function getTrialQuestionsByGrade(grade: StudentGrade | null) {
+  return grade ? trialByGrade[grade] : trialQuestionGeneral;
+}

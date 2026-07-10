@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { appRoutes } from "@/lib/routes";
 import { login, register } from "../api";
 import { getDashboardPath } from "../redirect";
-import { getToken, getUser, saveSession } from "../session";
+import { getToken, getUser, saveSelectedGrade, saveSession } from "../session";
 import { AuthField } from "./auth-field";
 import { AuthSwitch } from "./auth-switch";
 import { ArrowLeft } from "lucide-react";
+import type { StudentGrade } from "@/types/auth";
+import { GradeSelect } from "./grade-select";
 
 type AuthMode = "login" | "register";
 
@@ -21,6 +23,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [grade, setGrade] = useState<StudentGrade>("SD");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,6 +48,9 @@ export function AuthForm({ mode }: AuthFormProps) {
         ? await register({ name, email, password })
         : await login({ email, password });
       saveSession(session);
+      if (isRegister) {
+        saveSelectedGrade(grade);
+      }
       router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
       setError(
@@ -79,6 +85,7 @@ export function AuthForm({ mode }: AuthFormProps) {
             {isRegister ? (
               <AuthField label="Nama" value={name} onChange={setName} />
             ) : null}
+            {isRegister ? <GradeSelect value={grade} onChange={setGrade} /> : null}
             <AuthField
               label="Email"
               type="email"

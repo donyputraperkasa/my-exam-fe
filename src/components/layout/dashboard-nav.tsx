@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import {
   BookOpenCheck,
   ChartNoAxesCombined,
-  ClipboardList,
   CreditCard,
   FileQuestion,
   GraduationCap,
   LayoutDashboard,
   PackageCheck,
+  Video,
   Users,
 } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
@@ -28,11 +28,11 @@ const navItems = {
   ],
   STUDENT: [
     { label: "Dashboard", href: appRoutes.student.dashboard, Icon: LayoutDashboard },
-    { label: "Paket aktif", href: appRoutes.student.packages, Icon: PackageCheck },
+    { label: "Paket", href: appRoutes.student.packages, Icon: PackageCheck },
     { label: "Recap Nilai", href: appRoutes.student.recap, Icon: ChartNoAxesCombined },
     { label: "Riwayat Subscribe", href: appRoutes.student.subscription, Icon: CreditCard },
-    { label: "Pembahasan Materi", href: appRoutes.student.discussion, Icon: ClipboardList },
-    { label: "Private Lesson", href: appRoutes.student.lessPrivate, Icon: GraduationCap },
+    { label: "Pembahasan Video", href: appRoutes.student.discussion, Icon: Video },
+    { label: "Les Private", href: appRoutes.student.lessPrivate, Icon: GraduationCap },
   ],
 };
 
@@ -46,7 +46,7 @@ export function DashboardNav({ role }: DashboardNavProps) {
   return (
     <nav className="grid gap-1">
       {navItems[role].map(({ label, href, Icon }) => {
-        const active = pathname === href;
+        const active = pathname === href || isNestedStudentPackage(pathname, href);
         return (
           <Link
             key={label}
@@ -64,4 +64,8 @@ export function DashboardNav({ role }: DashboardNavProps) {
       })}
     </nav>
   );
+}
+
+function isNestedStudentPackage(pathname: string, href: string) {
+  return href === appRoutes.student.packages && pathname === appRoutes.student.trial;
 }

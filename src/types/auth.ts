@@ -1,4 +1,5 @@
 export type UserRole = "ADMIN" | "STUDENT";
+export type StudentGrade = "SD" | "SMP" | "SMA" | "SMK";
 
 export type AuthUser = {
   id: string;

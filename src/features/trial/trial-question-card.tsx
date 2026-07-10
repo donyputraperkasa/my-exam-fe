@@ -1,28 +1,45 @@
 type TrialQuestionCardProps = {
-  index: number;
+  current: number;
+  onSelect: (answer: string) => void;
+  options: string[];
   question: string;
+  selectedAnswer?: string;
+  total: number;
 };
 
-export function TrialQuestionCard({ index, question }: TrialQuestionCardProps) {
+export function TrialQuestionCard({
+  current,
+  onSelect,
+  options,
+  question,
+  selectedAnswer,
+  total,
+}: TrialQuestionCardProps) {
   return (
-    <article className="rounded-lg border border-border bg-surface p-4 shadow-sm">
-      <p className="text-xs font-bold uppercase tracking-wide text-secondary">
-        Soal {index + 1}
-      </p>
-      <h2 className="mt-2 text-base font-extrabold text-foreground">
-        {question}
-      </h2>
-      <div className="mt-4 grid grid-cols-2 gap-2 text-sm font-semibold">
-        {["A", "B", "C", "D"].map((option) => (
+    <>
+      <section className="rounded-[2rem] border border-border bg-surface/95 p-6 text-center shadow-sm md:p-10">
+        <p className="text-sm font-black uppercase tracking-wide text-secondary">
+          Soal {current + 1} dari {total}
+        </p>
+        <h1 className="mt-4 text-2xl font-black md:text-4xl">{question}</h1>
+      </section>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        {options.map((option, index) => (
           <button
             key={option}
             type="button"
-            className="rounded-md border border-border px-3 py-2 text-left transition hover:border-primary hover:bg-primary/5"
+            onClick={() => onSelect(option)}
+            className={`rounded-xl border px-5 py-4 text-left text-lg font-black shadow-sm transition ${
+              selectedAnswer === option
+                ? "border-primary bg-primary text-white"
+                : "border-border bg-surface/95 hover:border-primary"
+            }`}
           >
-            {option}. Pilihan jawaban
+            {String.fromCharCode(65 + index)}. {option}
           </button>
         ))}
       </div>
-    </article>
+    </>
   );
 }

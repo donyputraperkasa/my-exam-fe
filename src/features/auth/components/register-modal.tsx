@@ -3,10 +3,12 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserPlus, X } from "lucide-react";
+import type { StudentGrade } from "@/types/auth";
 import { register } from "../api";
 import { getDashboardPath } from "../redirect";
-import { saveSession } from "../session";
+import { saveSelectedGrade, saveSession } from "../session";
 import { AuthField } from "./auth-field";
+import { GradeSelect } from "./grade-select";
 
 type RegisterModalProps = {
   open: boolean;
@@ -22,6 +24,7 @@ export function RegisterModal({
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [grade, setGrade] = useState<StudentGrade>("SD");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,6 +41,7 @@ export function RegisterModal({
     try {
       const session = await register({ name, email, password });
       saveSession(session);
+      saveSelectedGrade(grade);
       onClose();
       router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
@@ -62,6 +66,7 @@ export function RegisterModal({
         <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
           <AuthField label="Nama" value={name} onChange={setName} />
           <AuthField label="Email" type="email" value={email} onChange={setEmail} />
+          <GradeSelect value={grade} onChange={setGrade} />
           <AuthField
             label="Password"
             type="password"

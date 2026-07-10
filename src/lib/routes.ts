@@ -16,6 +16,7 @@ export const appRoutes = {
   },
   student: {
     dashboard: "/student",
+    trial: "/student/trial",
     packages: "/student/packages",
     recap: "/student/recap",
     subscription: "/student/subscription",
