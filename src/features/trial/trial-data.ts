@@ -1,4 +1,5 @@
 import type { StudentGrade } from "@/types/auth";
+import type { TrialQuestion } from "./trial-types";
 
 export const trialQuestionGeneral = [
   { question: "12 x 8 = ...", options: ["86", "96", "108", "116"], answer: "96" },
@@ -73,5 +74,28 @@ const trialByGrade = {
 };
 
 export function getTrialQuestionsByGrade(grade: StudentGrade | null) {
-  return grade ? trialByGrade[grade] : trialQuestionGeneral;
+  return mapLocalQuestions(grade ? trialByGrade[grade] : trialQuestionGeneral);
+}
+
+type LocalQuestion = {
+  question: string;
+  options: string[];
+  answer: string;
+};
+
+function mapLocalQuestions(items: LocalQuestion[]): TrialQuestion[] {
+  return items.map((item, questionIndex) => {
+    const options = item.options.map((option, optionIndex) => ({
+      id: `local-${questionIndex}-${optionIndex}`,
+      label: String.fromCharCode(65 + optionIndex),
+      text: option,
+    }));
+
+    return {
+      id: `local-${questionIndex}`,
+      question: item.question,
+      options,
+      answerId: options.find((option) => option.text === item.answer)?.id,
+    };
+  });
 }

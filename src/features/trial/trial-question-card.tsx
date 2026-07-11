@@ -1,7 +1,9 @@
+import type { TrialOption } from "./trial-types";
+
 type TrialQuestionCardProps = {
   current: number;
   onSelect: (answer: string) => void;
-  options: string[];
+  options: TrialOption[];
   question: string;
   selectedAnswer?: string;
   total: number;
@@ -27,16 +29,16 @@ export function TrialQuestionCard({
       <div className="grid gap-3 md:grid-cols-2">
         {options.map((option, index) => (
           <button
-            key={option}
+            key={option.id}
             type="button"
-            onClick={() => onSelect(option)}
+            onClick={() => onSelect(option.id)}
             className={`rounded-xl border px-5 py-4 text-left text-lg font-black shadow-sm transition ${
-              selectedAnswer === option
+              selectedAnswer === option.id
                 ? "border-primary bg-primary text-white"
                 : "border-border bg-surface/95 hover:border-primary"
             }`}
           >
-            {String.fromCharCode(65 + index)}. {option}
+            {option.label || String.fromCharCode(65 + index)}. {option.text}
           </button>
         ))}
       </div>

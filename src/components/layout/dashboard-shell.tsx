@@ -37,10 +37,10 @@ export function DashboardShell({
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <main className="relative h-screen overflow-hidden bg-background text-foreground">
       <AppBackground />
-      <div className="relative grid min-h-screen w-full gap-0 lg:grid-cols-[320px_minmax(0,1fr)]">
-        <aside className="flex flex-col border-b border-border bg-white/82 px-5 py-5 backdrop-blur-xl lg:min-h-screen lg:border-b-0 lg:border-r">
+      <div className="relative grid h-screen w-full gap-0 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <aside className="flex flex-col border-b border-border bg-white/82 px-5 py-5 backdrop-blur-xl lg:h-screen lg:border-b-0 lg:border-r">
           <div className="w-full">
             <Link href={appRoutes.home} className="flex items-center gap-3">
               <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-white shadow-lg shadow-primary/20">
@@ -70,7 +70,7 @@ export function DashboardShell({
           </button>
         </aside>
 
-        <section className="min-w-0 px-5 py-6 md:px-8 xl:px-10">
+        <section className="min-h-0 min-w-0 overflow-y-auto px-5 py-6 md:px-8 xl:px-10">
           <header className="relative mb-6 overflow-hidden rounded-lg border border-white/60 bg-[linear-gradient(120deg,rgba(124,58,237,0.86)_0%,rgba(255,107,107,0.74)_58%,rgba(251,191,36,0.68)_100%)] p-6 text-white shadow-sm">
             <div className="absolute right-0 top-0 h-full w-1/2 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.32),transparent_35%),radial-gradient(circle_at_30%_80%,rgba(251,191,36,0.24),transparent_30%)]" />
             <div>

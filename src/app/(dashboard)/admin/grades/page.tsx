@@ -1,12 +1,10 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { GradeManager } from "@/features/admin/grades/grade-manager";
 
 export default function AdminGradesPage() {
   return (
-    <DashboardPlaceholder
-      eyebrow="Admin Panel"
-      role="ADMIN"
-      title="Kelola Jenjang"
-      description="Halaman CRUD jenjang untuk SD, SMP, SMA, TKA, dan ASPD."
-    />
+    <DashboardShell eyebrow="Admin Panel" role="ADMIN" title="Kelola Jenjang">
+      <GradeManager />
+    </DashboardShell>
   );
 }

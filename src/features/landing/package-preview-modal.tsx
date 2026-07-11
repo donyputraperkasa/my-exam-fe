@@ -22,11 +22,11 @@ export function PackagePreviewModal({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]/50 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]/50 px-4 py-8 backdrop-blur-sm"
     >
       <section
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-6xl rounded-3xl border border-white/70 bg-white/95 p-6 text-foreground shadow-2xl shadow-secondary/20"
+        className="w-full max-w-4xl rounded-3xl border border-white/70 bg-white/95 p-6 text-foreground shadow-2xl shadow-secondary/20 max-h-[85vh] overflow-y-auto"
       >
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -50,7 +50,7 @@ export function PackagePreviewModal({
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {previewPackages.map((item) => (
             <PackagePreviewCard
               key={item.title}

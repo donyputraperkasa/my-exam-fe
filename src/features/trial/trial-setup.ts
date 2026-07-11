@@ -1,7 +1,7 @@
 import { getDashboardPath } from "@/features/auth/redirect";
 import { getSelectedGrade, getUser } from "@/features/auth/session";
 import { appRoutes } from "@/lib/routes";
-import { getTrialQuestionsByGrade, trialQuestionGeneral } from "./trial-data";
+import { getTrialQuestionsByGrade } from "./trial-data";
 
 export function getTrialSetup() {
   const user = getUser();
@@ -11,7 +11,7 @@ export function getTrialSetup() {
       backHref: appRoutes.home,
       backLabel: "Kembali ke beranda",
       isAuthenticated: false,
-      questions: trialQuestionGeneral,
+      questions: getTrialQuestionsByGrade(null),
     };
   }
 

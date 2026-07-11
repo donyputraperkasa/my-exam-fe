@@ -1,12 +1,10 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { SubjectManager } from "@/features/admin/subjects/subject-manager";
 
 export default function AdminSubjectsPage() {
   return (
-    <DashboardPlaceholder
-      eyebrow="Admin Panel"
-      role="ADMIN"
-      title="Kelola Mapel"
-      description="Halaman CRUD mapel yang nanti tersambung ke jenjang."
-    />
+    <DashboardShell eyebrow="Admin Panel" role="ADMIN" title="Kelola Mapel">
+      <SubjectManager />
+    </DashboardShell>
   );
 }

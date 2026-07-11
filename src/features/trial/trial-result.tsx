@@ -6,23 +6,18 @@ import { CheckCircle2, LockKeyhole, RotateCcw } from "lucide-react";
 import { LoginModal } from "@/features/auth/components/login-modal";
 import { RegisterModal } from "@/features/auth/components/register-modal";
 import { appRoutes } from "@/lib/routes";
+import type { TrialScore } from "./trial-types";
 
 type TrialResultProps = {
-  answeredCount: number;
-  correctCount: number;
-  incorrectCount: number;
   isAuthenticated: boolean;
   onRetry: () => void;
-  score: number;
+  result: TrialScore;
 };
 
 export function TrialResult({
-  answeredCount,
-  correctCount,
-  incorrectCount,
   isAuthenticated,
   onRetry,
-  score,
+  result,
 }: TrialResultProps) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -35,19 +30,23 @@ export function TrialResult({
           <p className="mt-4 text-sm font-black uppercase tracking-wide text-secondary">
             Hasil Tryout Gratis
           </p>
-          <h2 className="mt-2 text-5xl font-black text-foreground">{score}</h2>
+          <h2 className="mt-2 text-5xl font-black text-foreground">
+            {result.score}
+          </h2>
           <p className="mt-2 text-sm font-bold text-muted">
-            {answeredCount}/10 soal dijawab. Pembahasan lengkap tersedia di
-            paket premium.
+            {result.answeredCount}/{result.totalQuestions} soal dijawab.
+            Pembahasan lengkap tersedia di paket premium.
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <div className="rounded-xl bg-primary/10 px-4 py-3">
               <p className="text-xs font-black uppercase text-primary">Benar</p>
-              <p className="mt-1 text-2xl font-black">{correctCount}</p>
+              <p className="mt-1 text-2xl font-black">{result.correctCount}</p>
             </div>
             <div className="rounded-xl bg-secondary/10 px-4 py-3">
               <p className="text-xs font-black uppercase text-secondary">Salah</p>
-              <p className="mt-1 text-2xl font-black">{incorrectCount}</p>
+              <p className="mt-1 text-2xl font-black">
+                {result.incorrectCount}
+              </p>
             </div>
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">

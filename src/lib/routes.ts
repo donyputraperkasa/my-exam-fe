@@ -18,6 +18,7 @@ export const appRoutes = {
     dashboard: "/student",
     trial: "/student/trial",
     packages: "/student/packages",
+    packageDetail: (id: string) => `/student/packages/${id}`,
     recap: "/student/recap",
     subscription: "/student/subscription",
     discussion: "/student/discussion",

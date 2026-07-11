@@ -1,4 +1,4 @@
-import { CalendarDays, Clock3, CreditCard, Sparkles } from "lucide-react";
+import { CalendarDays, Clock3, CreditCard, Presentation, Sparkles } from "lucide-react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 
 const plans = [
@@ -13,6 +13,12 @@ const plans = [
     price: "Rp99.000",
     description: "Lebih hemat untuk latihan bertahap sampai siap.",
     icon: Sparkles,
+  },
+  {
+    name: "Mode Ujian",
+    price: "Segera hadir",
+    description: "Untuk guru membuat ujian, share link, dan murid masuk dengan PIN.",
+    icon: Presentation,
   },
 ];
 
@@ -31,7 +37,7 @@ export default function StudentSubscriptionPage() {
       role="STUDENT"
       title="Riwayat Subscribe"
     >
-      <section className="grid gap-4 lg:grid-cols-2">
+      <section className="grid gap-4 lg:grid-cols-3">
         {plans.map(({ description, icon: Icon, name, price }) => (
           <article
             key={name}

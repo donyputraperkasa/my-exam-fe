@@ -1,12 +1,14 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { QuestionManager } from "@/features/admin/questions/question-manager";
 
 export default function AdminQuestionsPage() {
   return (
-    <DashboardPlaceholder
+    <DashboardShell
       eyebrow="Admin Panel"
       role="ADMIN"
-      title="Bank Soal"
-      description="Halaman CRUD soal, pilihan jawaban, kunci, dan pembahasan."
-    />
+      title="Soal dan Pembahasan"
+    >
+      <QuestionManager />
+    </DashboardShell>
   );
 }
