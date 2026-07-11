@@ -13,6 +13,10 @@ export const appRoutes = {
     packages: "/admin/packages",
     subscriptions: "/admin/subscriptions",
     lessPrivate: "/admin/lessPrivate",
+    teacher: "/admin/teacher",
+    teacherExams: "/admin/teacher/exams",
+    teacherMonitor: "/admin/teacher/monitor",
+    teacherResults: "/admin/teacher/results",
   },
   student: {
     dashboard: "/student",
@@ -23,5 +27,11 @@ export const appRoutes = {
     subscription: "/student/subscription",
     discussion: "/student/discussion",
     lessPrivate: "/student/lessPrivate",
+  },
+  teacher: {
+    dashboard: "/teacher",
+    exams: "/teacher/exams",
+    monitor: "/teacher/monitor",
+    results: "/teacher/results",
   },
 };

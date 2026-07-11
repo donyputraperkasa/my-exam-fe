@@ -71,7 +71,14 @@ export function HeroSection() {
           <StatsRow />
         </div>
       </section>
-      <LoginModal open={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LoginModal
+        open={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onOpenRegister={() => {
+          setIsLoginOpen(false);
+          setIsRegisterOpen(true);
+        }}
+      />
       <RegisterModal
         open={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}

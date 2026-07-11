@@ -2,13 +2,15 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserPlus, X } from "lucide-react";
-import type { StudentGrade } from "@/types/auth";
+import { UserPlus } from "lucide-react";
 import { register } from "../api";
+import { getAuthErrorMessage } from "../auth-error";
 import { getDashboardPath } from "../redirect";
-import { saveSelectedGrade, saveSession } from "../session";
+import { saveSession } from "../session";
+import { useRegisterAccount } from "../use-register-account";
 import { AuthField } from "./auth-field";
-import { GradeSelect } from "./grade-select";
+import { AuthModalHeader } from "./auth-modal-header";
+import { RegisterAccountFields } from "./register-account-fields";
 
 type RegisterModalProps = {
   open: boolean;
@@ -22,9 +24,8 @@ export function RegisterModal({
   onOpenLogin,
 }: RegisterModalProps) {
   const router = useRouter();
-  const [name, setName] = useState("");
+  const registerAccount = useRegisterAccount();
   const [email, setEmail] = useState("");
-  const [grade, setGrade] = useState<StudentGrade>("SD");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,15 +40,13 @@ export function RegisterModal({
     setLoading(true);
 
     try {
-      const session = await register({ name, email, password });
+      const session = await register(registerAccount.getPayload(email, password));
       saveSession(session);
-      saveSelectedGrade(grade);
+      registerAccount.saveGrade();
       onClose();
       router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
-      setError(
-        caughtError instanceof Error ? caughtError.message : "Terjadi kesalahan",
-      );
+      setError(getAuthErrorMessage(caughtError));
     } finally {
       setLoading(false);
     }
@@ -60,60 +59,54 @@ export function RegisterModal({
     >
       <section
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-md rounded-2xl border border-white/70 bg-white/95 p-5 text-foreground shadow-2xl shadow-accent/20"
+        className="max-h-[70vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-violet-100 bg-white/95 text-foreground shadow-2xl shadow-violet-100"
       >
-        <ModalHeader onClose={onClose} />
-        <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
-          <AuthField label="Nama" value={name} onChange={setName} />
-          <AuthField label="Email" type="email" value={email} onChange={setEmail} />
-          <GradeSelect value={grade} onChange={setGrade} />
-          <AuthField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={setPassword}
+        <div className="border-b border-violet-100 bg-gradient-to-br from-violet-50 via-pink-50 to-sky-50 p-6">
+          <AuthModalHeader
+            Icon={UserPlus}
+            eyebrow="Akun MyExam"
+            onClose={onClose}
+            text="Pilih jenis akun, lengkapi data, lalu mulai belajar atau membuat ujian dalam hitungan menit."
+            title="Bergabung dengan MyExam."
           />
-          {error ? <p className="text-sm text-danger">{error}</p> : null}
-          <button
-            type="submit"
-            disabled={loading}
-            className="h-11 rounded-md bg-accent text-sm font-bold text-foreground transition hover:bg-amber-400 disabled:opacity-60"
-          >
-            {loading ? "Memproses..." : "Mulai Gratis"}
-          </button>
-        </form>
-        <button
-          type="button"
-          onClick={onOpenLogin}
-          className="mt-4 w-full text-center text-sm font-bold text-secondary"
-        >
-          Sudah punya akun? Masuk
-        </button>
-      </section>
-    </div>
-  );
-}
+        </div>
 
-function ModalHeader({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="flex items-start justify-between gap-4">
-      <div>
-        <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent text-foreground">
-          <UserPlus className="h-5 w-5" />
-        </span>
-        <p className="mt-4 text-sm font-bold uppercase tracking-wide text-secondary">
-          Akun Gratis
-        </p>
-        <h2 className="mt-2 text-2xl font-extrabold">Mulai latihan hari ini.</h2>
-      </div>
-      <button
-        type="button"
-        onClick={onClose}
-        className="rounded-full border border-border p-2 text-muted transition hover:text-foreground"
-        aria-label="Tutup modal daftar"
-      >
-        <X className="h-4 w-4" />
-      </button>
+        <div className="bg-white p-6">
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <RegisterAccountFields
+              variant="modal"
+              {...registerAccount.fieldsProps}
+            />
+            <AuthField label="Email" type="email" value={email} onChange={setEmail} />
+            <AuthField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={setPassword}
+            />
+            {error ? <p className="text-sm text-danger">{error}</p> : null}
+            <button
+              type="submit"
+              disabled={loading}
+              className="h-12 rounded-2xl bg-gradient-to-r from-pink-300 via-violet-300 to-sky-300 text-base font-black text-slate-800 shadow-lg shadow-violet-100 transition duration-300 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading
+                ? "Memproses..."
+                : registerAccount.accountType === "TEACHER"
+                  ? "Daftar sebagai Guru"
+                  : "Mulai Gratis"}
+            </button>
+          </form>
+
+          <button
+            type="button"
+            onClick={onOpenLogin}
+            className="mt-5 w-full text-center text-sm font-bold text-violet-500 transition hover:text-violet-600"
+          >
+            Sudah punya akun? Masuk
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

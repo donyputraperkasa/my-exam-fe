@@ -24,7 +24,7 @@ export type ExamPackage = {
   durationMinutes: number | null;
   isActive: boolean;
   _count?: { questions: number; attempts: number };
-  questions?: Array<{ question: Question }>;
+  questions?: Array<{ order?: number; question: Question }>;
 };
 
 export type QuestionOption = {
@@ -48,7 +48,10 @@ export type Question = {
   isActive: boolean;
   isPublicPreview: boolean;
   options: QuestionOption[];
-  packages?: Array<{ packageId: string }>;
+  packages?: Array<{
+    packageId: string;
+    package?: Pick<ExamPackage, "id" | "title" | "accessType" | "isActive">;
+  }>;
 };
 
 export type PaginatedResponse<TData> = {

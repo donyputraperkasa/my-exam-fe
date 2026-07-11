@@ -1,10 +1,10 @@
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { GradeManager } from "@/features/admin/grades/grade-manager";
+import { CategoryManager } from "@/features/admin/categories/category-manager";
 
 export default function AdminGradesPage() {
   return (
-    <DashboardShell eyebrow="Admin Panel" role="ADMIN" title="Kelola Jenjang">
-      <GradeManager />
+    <DashboardShell eyebrow="Admin Panel" role="ADMIN" title="Buat Kategori Soal">
+      <CategoryManager />
     </DashboardShell>
   );
 }

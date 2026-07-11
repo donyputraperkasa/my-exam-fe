@@ -15,6 +15,10 @@ type QuestionPanelProps = {
 };
 
 export function QuestionPanel(props: QuestionPanelProps) {
+  const subjects = props.filterGradeId
+    ? props.subjects.filter((subject) => subject.gradeId === props.filterGradeId)
+    : props.subjects;
+
   return (
     <div className="rounded-lg border border-border bg-white/88 p-5 shadow-sm">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -26,7 +30,7 @@ export function QuestionPanel(props: QuestionPanelProps) {
           </select>
           <select value={props.filterSubjectId} onChange={(event) => props.onFilterSubject(event.target.value)} className="h-10 rounded-md border border-border px-3 text-sm font-bold">
             <option value="">Semua mapel</option>
-            {props.subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
+            {subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
           </select>
         </div>
       </div>

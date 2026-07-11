@@ -1,4 +1,4 @@
-export type UserRole = "ADMIN" | "STUDENT";
+export type UserRole = "ADMIN" | "STUDENT" | "TEACHER";
 export type StudentGrade = "SD" | "SMP" | "SMA" | "SMK";
 
 export type AuthUser = {

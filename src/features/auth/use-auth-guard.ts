@@ -17,7 +17,7 @@ type SessionSnapshot = {
   user: AuthUser | null;
 };
 
-export function useAuthGuard(requiredRole?: UserRole): AuthState {
+export function useAuthGuard(requiredRole?: UserRole | UserRole[]): AuthState {
   const router = useRouter();
   const snapshot = useSyncExternalStore(
     subscribeSession,
@@ -32,17 +32,25 @@ export function useAuthGuard(requiredRole?: UserRole): AuthState {
       return;
     }
 
-    if (requiredRole && session.user.role !== requiredRole) {
+    if (requiredRole && !canAccessRole(session.user.role, requiredRole)) {
       router.replace(getDashboardPath(session.user.role));
     }
   }, [requiredRole, router, session]);
 
   return {
     ready: Boolean(
-      session.token && session.user && (!requiredRole || session.user.role === requiredRole),
+      session.token &&
+        session.user &&
+        (!requiredRole || canAccessRole(session.user.role, requiredRole)),
     ),
     user: session.user,
   };
+}
+
+function canAccessRole(userRole: UserRole, requiredRole: UserRole | UserRole[]) {
+  return Array.isArray(requiredRole)
+    ? requiredRole.includes(userRole)
+    : userRole === requiredRole;
 }
 
 function subscribeSession(onChange: () => void) {

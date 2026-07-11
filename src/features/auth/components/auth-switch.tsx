@@ -1,20 +1,22 @@
-import Link from "next/link";
-import { appRoutes } from "@/lib/routes";
-
 type AuthMode = "login" | "register";
 
-export function AuthSwitch({ mode }: { mode: AuthMode }) {
+type AuthSwitchProps = {
+  mode: AuthMode;
+  onSwitch: () => void;
+};
+
+export function AuthSwitch({ mode, onSwitch }: AuthSwitchProps) {
   const isRegister = mode === "register";
 
   return (
-    <p className="mt-4 text-center text-sm text-muted">
-      {isRegister ? "Sudah punya akun?" : "Belum punya akun?"}{" "}
-      <Link
-        href={isRegister ? appRoutes.auth.login : appRoutes.auth.register}
-        className="font-semibold text-secondary"
-      >
-        {isRegister ? "Masuk" : "Daftar"}
-      </Link>
-    </p>
+    <button
+      type="button"
+      onClick={onSwitch}
+      className="mt-5 w-full text-center text-sm font-bold text-violet-500 transition hover:text-violet-600 hover:underline"
+    >
+      {isRegister
+        ? "Sudah punya akun? Masuk"
+        : "Belum punya akun? Daftar gratis"}
+    </button>
   );
 }

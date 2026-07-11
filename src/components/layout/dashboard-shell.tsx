@@ -12,6 +12,7 @@ import { AppBackground } from "./app-background";
 import { DashboardNav } from "./dashboard-nav";
 
 type DashboardShellProps = {
+  allowedRoles?: UserRole[];
   children: ReactNode;
   eyebrow: string;
   role: UserRole;
@@ -19,13 +20,14 @@ type DashboardShellProps = {
 };
 
 export function DashboardShell({
+  allowedRoles,
   children,
   eyebrow,
   role,
   title,
 }: DashboardShellProps) {
   const router = useRouter();
-  const { ready, user } = useAuthGuard(role);
+  const { ready, user } = useAuthGuard(allowedRoles ?? role);
 
   function handleLogout() {
     clearSession();

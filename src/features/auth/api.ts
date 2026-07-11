@@ -6,8 +6,13 @@ type LoginPayload = {
   password: string;
 };
 
-type RegisterPayload = LoginPayload & {
+export type RegisterPayload = LoginPayload & {
   name: string;
+  accountType: "STUDENT" | "TEACHER";
+  gradeId?: string;
+  schoolName?: string;
+  teacherSubject?: string;
+  schoolAddress?: string;
 };
 
 export function login(payload: LoginPayload) {

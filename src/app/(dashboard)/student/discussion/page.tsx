@@ -11,7 +11,7 @@ export default function StudentDiscussionPage() {
     <DashboardShell
       eyebrow="Ruang Belajar"
       role="STUDENT"
-      title="Pembahasan Video"
+      title="Kumpulan Video Pembahasan"
     >
       <section className="grid gap-4 xl:grid-cols-[1.25fr_0.75fr]">
         <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
@@ -25,10 +25,10 @@ export default function StudentDiscussionPage() {
           </div>
           <div className="p-5">
             <p className="text-sm font-bold uppercase tracking-wide text-secondary">
-              Video Pembahasan
+              Pembahasan dari soal
             </p>
             <h2 className="mt-2 text-2xl font-extrabold">
-              Numerasi pemanasan: cara cepat dan pembahasan.
+              Video yang terhubung dari pembahasan tiap soal.
             </h2>
           </div>
         </div>
@@ -37,7 +37,7 @@ export default function StudentDiscussionPage() {
             <div key={item} className="rounded-lg border border-border bg-surface p-4">
               <p className="text-sm font-bold">{item}</p>
               <p className="mt-1 text-xs font-semibold text-muted">
-                Embed video pembahasan materi siswa.
+                Muncul dari link video pembahasan yang admin isi di soal.
               </p>
             </div>
           ))}

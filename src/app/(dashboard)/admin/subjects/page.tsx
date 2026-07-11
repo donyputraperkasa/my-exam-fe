@@ -1,10 +1,10 @@
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { SubjectManager } from "@/features/admin/subjects/subject-manager";
+import { CategoryManager } from "@/features/admin/categories/category-manager";
 
 export default function AdminSubjectsPage() {
   return (
-    <DashboardShell eyebrow="Admin Panel" role="ADMIN" title="Kelola Mapel">
-      <SubjectManager />
+    <DashboardShell eyebrow="Admin Panel" role="ADMIN" title="Buat Kategori Soal">
+      <CategoryManager />
     </DashboardShell>
   );
 }

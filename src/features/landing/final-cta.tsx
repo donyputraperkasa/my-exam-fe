@@ -41,7 +41,14 @@ export function FinalCta() {
           setIsLoginOpen(true);
         }}
       />
-      <LoginModal open={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <LoginModal
+        open={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onOpenRegister={() => {
+          setIsLoginOpen(false);
+          setIsRegisterOpen(true);
+        }}
+      />
     </>
   );
 }

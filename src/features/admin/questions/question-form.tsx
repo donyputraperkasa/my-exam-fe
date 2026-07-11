@@ -40,17 +40,18 @@ export function QuestionForm({
       </p>
       <Select label="Jenjang" value={form.gradeId} onChange={(gradeId) => update({ gradeId })} items={grades} />
       <Select label="Mapel" value={form.subjectId} onChange={(subjectId) => update({ subjectId })} items={subjects} />
+      <QuestionPackagePicker form={form} onChange={onChange} packages={packages} />
       <label className="mt-4 grid gap-2 text-sm font-bold">
         Soal
         <textarea required value={form.question} onChange={(event) => update({ question: event.target.value })} className="min-h-24 rounded-md border border-border px-3 py-2 outline-none focus:border-primary" />
       </label>
       <QuestionOptions form={form} onChange={onChange} />
       <label className="mt-4 grid gap-2 text-sm font-bold">
-        Pembahasan teks
+        Pembahasan per soal
         <textarea value={form.explanation} onChange={(event) => update({ explanation: event.target.value })} className="min-h-20 rounded-md border border-border px-3 py-2 outline-none focus:border-primary" />
       </label>
       <label className="mt-4 grid gap-2 text-sm font-bold">
-        Upload foto pembahasan
+        Foto pembahasan
         <input
           type="file"
           accept="image/*"
@@ -62,8 +63,7 @@ export function QuestionForm({
         />
       </label>
       {form.explanationImageUrl ? <p className="mt-2 break-all text-xs font-bold text-muted">{form.explanationImageUrl}</p> : null}
-      <Input label="URL video embed" value={form.explanationVideoUrl} onChange={(value) => update({ explanationVideoUrl: value })} />
-      <QuestionPackagePicker form={form} onChange={onChange} packages={packages} />
+      <Input label="Link video pembahasan" value={form.explanationVideoUrl} onChange={(value) => update({ explanationVideoUrl: value })} />
       <div className="mt-4 grid gap-2 text-sm font-bold">
         <label><input type="checkbox" checked={form.isPublicPreview} onChange={(event) => update({ isPublicPreview: event.target.checked })} /> Soal gratis publik</label>
         <label><input type="checkbox" checked={form.isActive} onChange={(event) => update({ isActive: event.target.checked })} /> Aktif</label>

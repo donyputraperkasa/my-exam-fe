@@ -1,21 +1,25 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn, X } from "lucide-react";
-import { appRoutes } from "@/lib/routes";
+import { LogIn } from "lucide-react";
 import { login } from "../api";
 import { getDashboardPath } from "../redirect";
 import { saveSession } from "../session";
 import { AuthField } from "./auth-field";
+import { AuthModalHeader } from "./auth-modal-header";
 
 type LoginModalProps = {
   open: boolean;
   onClose: () => void;
+  onOpenRegister: () => void;
 };
 
-export function LoginModal({ open, onClose }: LoginModalProps) {
+export function LoginModal({
+  open,
+  onClose,
+  onOpenRegister,
+}: LoginModalProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,6 +49,11 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
     }
   }
 
+  function handleOpenRegister() {
+    onClose();
+    onOpenRegister();
+  }
+
   return (
     <div
       onClick={onClose}
@@ -52,53 +61,52 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
     >
       <section
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-md rounded-2xl border border-white/70 bg-white/95 p-5 text-foreground shadow-2xl shadow-secondary/20"
+        className="max-h-[70vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-violet-100 bg-white/95 text-foreground shadow-2xl shadow-violet-100"
       >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-white">
-              <LogIn className="h-5 w-5" />
-            </span>
-            <p className="mt-4 text-sm font-bold uppercase tracking-wide text-secondary">
-              Masuk My Exam
-            </p>
-            <h2 className="mt-2 text-2xl font-extrabold">
-              Lanjutkan latihanmu.
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full border border-border p-2 text-muted transition hover:text-foreground"
-            aria-label="Tutup modal login"
-          >
-            <X className="h-4 w-4" />
-          </button>
+        <div className="border-b border-violet-100 bg-gradient-to-br from-violet-50 via-pink-50 to-sky-50 p-6">
+          <AuthModalHeader
+            Icon={LogIn}
+            eyebrow="Masuk MyExam"
+            onClose={onClose}
+            text="Masuk untuk melanjutkan latihan atau mengelola ujianmu."
+            title="Selamat datang kembali."
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
-          <AuthField label="Email" type="email" value={email} onChange={setEmail} />
-          <AuthField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={setPassword}
-          />
-          {error ? <p className="text-sm text-danger">{error}</p> : null}
+        <div className="bg-white p-6">
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <AuthField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={setEmail}
+            />
+            <AuthField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={setPassword}
+            />
+
+            {error ? <p className="text-sm text-danger">{error}</p> : null}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="h-12 rounded-2xl bg-gradient-to-r from-pink-300 via-violet-300 to-sky-300 text-base font-black text-slate-800 shadow-lg shadow-violet-100 transition duration-300 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Memproses..." : "Masuk"}
+            </button>
+          </form>
+
           <button
-            type="submit"
-            disabled={loading}
-            className="h-11 rounded-md bg-primary text-sm font-bold text-white transition hover:bg-blue-600 disabled:opacity-60"
+            type="button"
+            onClick={handleOpenRegister}
+            className="mt-5 w-full text-center text-sm font-bold text-violet-500 transition hover:text-violet-600"
           >
-            {loading ? "Memproses..." : "Masuk"}
+            Belum punya akun? Daftar
           </button>
-        </form>
-        <p className="mt-4 text-center text-sm text-muted">
-          Belum punya akun?{" "}
-          <Link href={appRoutes.auth.register} className="font-bold text-secondary">
-            Daftar gratis
-          </Link>
-        </p>
+        </div>
       </section>
     </div>
   );
