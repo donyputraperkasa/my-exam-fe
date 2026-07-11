@@ -1,6 +1,7 @@
 "use client";
 
 import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { appRoutes } from "@/lib/routes";
 import type { UserRole } from "@/types/auth";
 import { TeacherExamForm } from "./teacher-exam-form";
 import { TeacherExamList } from "./teacher-exam-list";
@@ -20,6 +21,9 @@ export function TeacherExamWorkspace({
   title,
 }: TeacherExamWorkspaceProps) {
   const { creating, createExam, error, exams, loading } = useTeacherExams();
+  const getDetailHref = role === "ADMIN"
+    ? appRoutes.admin.teacherExamDetail
+    : appRoutes.teacher.examDetail;
 
   return (
     <DashboardShell
@@ -35,7 +39,11 @@ export function TeacherExamWorkspace({
       ) : null}
       <section className="grid gap-5 xl:grid-cols-[0.85fr_1.15fr]">
         <TeacherExamForm creating={creating} onCreate={createExam} />
-        <TeacherExamList exams={exams} loading={loading} />
+        <TeacherExamList
+          exams={exams}
+          getDetailHref={getDetailHref}
+          loading={loading}
+        />
       </section>
     </DashboardShell>
   );

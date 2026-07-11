@@ -15,6 +15,7 @@ export const appRoutes = {
     lessPrivate: "/admin/lessPrivate",
     teacher: "/admin/teacher",
     teacherExams: "/admin/teacher/exams",
+    teacherExamDetail: (id: string) => `/admin/teacher/exams/${id}`,
     teacherMonitor: "/admin/teacher/monitor",
     teacherResults: "/admin/teacher/results",
   },
@@ -31,6 +32,7 @@ export const appRoutes = {
   teacher: {
     dashboard: "/teacher",
     exams: "/teacher/exams",
+    examDetail: (id: string) => `/teacher/exams/${id}`,
     monitor: "/teacher/monitor",
     results: "/teacher/results",
   },

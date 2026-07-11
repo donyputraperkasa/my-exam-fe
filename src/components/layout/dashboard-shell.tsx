@@ -10,6 +10,7 @@ import { appRoutes } from "@/lib/routes";
 import type { UserRole } from "@/types/auth";
 import { AppBackground } from "./app-background";
 import { DashboardNav } from "./dashboard-nav";
+import { FloatingContact } from "./floating-contact";
 
 type DashboardShellProps = {
   allowedRoles?: UserRole[];
@@ -91,6 +92,7 @@ export function DashboardShell({
           {children}
         </section>
       </div>
+      {role !== "ADMIN" ? <FloatingContact /> : null}
     </main>
   );
 }

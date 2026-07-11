@@ -4,20 +4,20 @@ import { DashboardShell } from "@/components/layout/dashboard-shell";
 const plans = [
   {
     name: "Subscribe 1 Bulan",
-    price: "Rp39.000",
+    price: "Segera hadir",
     description: "Cocok untuk pemanasan intensif sebelum ujian.",
     icon: CalendarDays,
   },
   {
     name: "Subscribe 3 Bulan",
-    price: "Rp99.000",
+    price: "Segera hadir",
     description: "Lebih hemat untuk latihan bertahap sampai siap.",
     icon: Sparkles,
   },
   {
-    name: "Mode Ujian",
+    name: "Subscribe Premium",
     price: "Segera hadir",
-    description: "Untuk guru membuat ujian, share link, dan murid masuk dengan PIN.",
+    description: "Khusus untuk belajar tiap materi",
     icon: Presentation,
   },
 ];
