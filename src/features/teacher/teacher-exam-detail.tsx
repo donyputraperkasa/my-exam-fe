@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Send } from "lucide-react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import type { UserRole } from "@/types/auth";
-import { filterTeacherQuestions } from "./filter-teacher-questions";
-import { TeacherExamToolbar } from "./teacher-exam-toolbar";
-import { TeacherQuestionList } from "./teacher-question-list";
-import { TeacherQuestionModal } from "./teacher-question-modal";
+import { TeacherExamInfo } from "./teacher-exam-info";
+import { TeacherCreditModal } from "./teacher-credit-modal";
+import { TeacherQuestionWorkspace } from "./teacher-question-workspace";
 import { useTeacherExamDetail } from "./use-teacher-exam-detail";
+import { useTeacherCredits } from "./use-teacher-credits";
 
 type TeacherExamDetailProps = {
   allowedRoles?: UserRole[];
@@ -19,10 +18,24 @@ type TeacherExamDetailProps = {
 };
 
 export function TeacherExamDetail(props: TeacherExamDetailProps) {
-  const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const { addQuestion, error, exam, loading, publish, saving } =
+  const [isCreditModalOpen, setIsCreditModalOpen] = useState(false);
+  const {
+    addQuestion,
+    deleteQuestion,
+    error,
+    exam,
+    loading,
+    publish,
+    saving,
+    updateQuestion,
+  } =
     useTeacherExamDetail(props.examId);
+  const creditState = useTeacherCredits();
+
+  async function handlePublish() {
+    await publish();
+    await creditState.refresh();
+  }
 
   return (
     <DashboardShell
@@ -35,74 +48,34 @@ export function TeacherExamDetail(props: TeacherExamDetailProps) {
       {error ? <Notice danger text={error} /> : null}
       {exam ? (
         <section className="grid gap-5">
-          <ExamInfo
+          <TeacherExamInfo
+            accessExpiresAt={exam.accessExpiresAt}
+            credits={creditState.credits}
+            creditsLoading={creditState.loading}
+            onNeedCredit={() => setIsCreditModalOpen(true)}
             pin={exam.pin}
-            publish={publish}
+            publish={handlePublish}
             saving={saving}
             shareToken={exam.shareToken}
             status={exam.status}
             title={exam.title}
           />
-          <TeacherExamToolbar
-            query={query}
-            onSearch={setQuery}
-            onCreate={() => setIsQuestionModalOpen(true)}
-          />
-          <TeacherQuestionList questions={filterTeacherQuestions(exam.questions, query)} />
-          <TeacherQuestionModal
-            onClose={() => setIsQuestionModalOpen(false)}
-            onCreate={addQuestion}
-            open={isQuestionModalOpen}
+          <TeacherQuestionWorkspace
+            addQuestion={addQuestion}
+            deleteQuestion={deleteQuestion}
+            participantCount={exam.participants.length}
+            questions={exam.questions}
             saving={saving}
+            status={exam.status}
+            updateQuestion={updateQuestion}
+          />
+          <TeacherCreditModal
+            onClose={() => setIsCreditModalOpen(false)}
+            open={isCreditModalOpen}
           />
         </section>
       ) : null}
     </DashboardShell>
-  );
-}
-
-function ExamInfo({ pin, publish, saving, shareToken, status, title }: {
-  pin: string;
-  publish: () => Promise<void>;
-  saving: boolean;
-  shareToken: string;
-  status: string;
-  title: string;
-}) {
-  const [copied, setCopied] = useState(false);
-
-  function copyLink() {
-    const link = `${window.location.origin}/teacher-exams/${shareToken}`;
-    void navigator.clipboard?.writeText(link);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
-  }
-
-  return (
-    <section className="rounded-2xl border border-violet-100 bg-white/90 p-6 shadow-sm">
-      <p className="text-sm font-black uppercase text-pink-400">Detail ujian</p>
-      <h2 className="mt-2 text-3xl font-black">{title}</h2>
-      <div className="mt-5 grid gap-3 text-sm font-bold text-muted">
-        <p>PIN: <span className="text-foreground">{pin}</span></p>
-        <p>Status: <span className="text-foreground">{status}</span></p>
-        <p className="break-all">Token: {shareToken}</p>
-      </div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <button className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl border text-sm font-black transition ${copied ? "border-green-100 bg-green-50 text-green-600" : "border-violet-100 text-violet-500"}`} onClick={copyLink} type="button">
-          <Copy className="h-4 w-4" />
-          {copied ? "Link Tersalin" : "Salin Link"}
-        </button>
-        <button
-          type="button"
-          disabled={saving || status !== "DRAFT"}
-          onClick={publish}
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-accent text-sm font-black text-foreground disabled:opacity-60"
-        >
-          <Send className="h-4 w-4" />
-          Publish
-        </button>
-      </div>
-    </section>
   );
 }
 

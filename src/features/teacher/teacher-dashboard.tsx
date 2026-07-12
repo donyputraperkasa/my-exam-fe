@@ -5,6 +5,7 @@ import { ClipboardList, Download, UsersRound, type LucideIcon } from "lucide-rea
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { appRoutes } from "@/lib/routes";
 import type { UserRole } from "@/types/auth";
+import { TeacherCreditStatus } from "./teacher-credit-status";
 
 type TeacherDashboardProps = {
   allowedRoles?: UserRole[];
@@ -47,6 +48,7 @@ export function TeacherDashboard({
     <DashboardShell
       allowedRoles={allowedRoles} eyebrow={eyebrow} role={role} title={title}
     >
+      <TeacherCreditStatus />
       <section className="grid gap-5 lg:grid-cols-3">
         {cards.map((card) => (
           <TeacherModeCard key={card.title} {...card} />

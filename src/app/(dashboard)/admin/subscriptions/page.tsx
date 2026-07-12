@@ -1,12 +1,14 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { TeacherCreditManager } from "@/features/admin/subscriptions/teacher-credit-manager";
 
 export default function AdminSubscriptionsPage() {
   return (
-    <DashboardPlaceholder
+    <DashboardShell
       eyebrow="Admin Panel"
       role="ADMIN"
-      title="Subscription Siswa"
-      description="Halaman untuk melihat dan mengatur akses premium siswa."
-    />
+      title="Subscription & Kredit"
+    >
+      <TeacherCreditManager />
+    </DashboardShell>
   );
 }

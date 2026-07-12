@@ -1,13 +1,14 @@
 "use client";
 
 import { X } from "lucide-react";
-import type { CreateTeacherQuestionPayload } from "./api";
+import type { CreateTeacherQuestionPayload, TeacherQuestion } from "./api";
 import { TeacherQuestionForm } from "./teacher-question-form";
 
 type TeacherQuestionModalProps = {
   onClose: () => void;
   onCreate: (payload: CreateTeacherQuestionPayload) => Promise<void>;
   open: boolean;
+  question?: TeacherQuestion;
   saving: boolean;
 };
 
@@ -15,6 +16,7 @@ export function TeacherQuestionModal({
   onClose,
   onCreate,
   open,
+  question,
   saving,
 }: TeacherQuestionModalProps) {
   if (!open) {
@@ -36,7 +38,12 @@ export function TeacherQuestionModal({
             <X className="h-5 w-5" />
           </button>
         </div>
-        <TeacherQuestionForm onCreate={onCreate} onSaved={onClose} saving={saving} />
+        <TeacherQuestionForm
+          initialQuestion={question}
+          onCreate={onCreate}
+          onSaved={onClose}
+          saving={saving}
+        />
       </div>
     </div>
   );

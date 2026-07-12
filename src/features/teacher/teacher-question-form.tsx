@@ -2,21 +2,27 @@
 
 import { FormEvent, useState } from "react";
 import { Plus } from "lucide-react";
-import type { CreateTeacherQuestionPayload } from "./api";
+import type { CreateTeacherQuestionPayload, TeacherQuestion } from "./api";
+import { QuestionOptionInput, QuestionTextArea } from "./teacher-question-fields";
 
 const labels = ["A", "B", "C", "D", "E"];
 type TeacherQuestionFormProps = {
   onCreate: (payload: CreateTeacherQuestionPayload) => Promise<void>;
   onSaved?: () => void;
+  initialQuestion?: TeacherQuestion;
   saving: boolean;
 };
 
-export function TeacherQuestionForm({ onCreate, onSaved, saving }: TeacherQuestionFormProps) {
-  const [question, setQuestion] = useState("");
-  const [explanation, setExplanation] = useState("");
-  const [correctLabel, setCorrectLabel] = useState("A");
+export function TeacherQuestionForm({ initialQuestion, onCreate, onSaved, saving }: TeacherQuestionFormProps) {
+  const [question, setQuestion] = useState(initialQuestion?.question ?? "");
+  const [explanation, setExplanation] = useState(initialQuestion?.explanation ?? "");
+  const [correctLabel, setCorrectLabel] = useState(
+    initialQuestion?.options.find((option) => option.isCorrect)?.label ?? "A",
+  );
   const [message, setMessage] = useState("");
-  const [options, setOptions] = useState<Record<string, string>>({});
+  const [options, setOptions] = useState<Record<string, string>>(
+    Object.fromEntries(initialQuestion?.options.map((option) => [option.label, option.text]) ?? []),
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,11 +56,13 @@ export function TeacherQuestionForm({ onCreate, onSaved, saving }: TeacherQuesti
 
   return (
     <form onSubmit={handleSubmit} className="rounded-2xl border border-violet-100 bg-white/90 p-6 shadow-sm">
-      <p className="text-sm font-black uppercase text-pink-400">Tambah soal</p>
-      <TextArea label="Soal" value={question} onChange={setQuestion} />
+      <p className="text-sm font-black uppercase text-pink-400">
+        {initialQuestion ? "Edit soal" : "Tambah soal"}
+      </p>
+      <QuestionTextArea label="Soal" value={question} onChange={setQuestion} />
       <div className="mt-4 grid gap-3">
         {labels.map((label) => (
-          <OptionInput
+          <QuestionOptionInput
             key={label}
             checked={correctLabel === label}
             label={label}
@@ -64,7 +72,7 @@ export function TeacherQuestionForm({ onCreate, onSaved, saving }: TeacherQuesti
           />
         ))}
       </div>
-      <TextArea label="Keterangan soal" value={explanation} onChange={setExplanation} />
+      <QuestionTextArea label="Keterangan soal" value={explanation} onChange={setExplanation} />
       {message ? <p className="mt-4 text-sm font-bold text-red-500">{message}</p> : null}
       <button
         type="submit"
@@ -72,48 +80,8 @@ export function TeacherQuestionForm({ onCreate, onSaved, saving }: TeacherQuesti
         className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-black text-foreground shadow-lg shadow-amber-100 transition hover:brightness-105 disabled:opacity-60"
       >
         <Plus className="h-4 w-4" />
-        {saving ? "Menyimpan..." : "Tambah Soal"}
+        {saving ? "Menyimpan..." : initialQuestion ? "Simpan Perubahan" : "Tambah Soal"}
       </button>
     </form>
-  );
-}
-
-function TextArea({ label, onChange, value }: {
-  label: string;
-  onChange: (value: string) => void;
-  value: string;
-}) {
-  return (
-    <label className="mt-4 grid gap-2 text-sm font-black text-foreground">
-      {label}
-      <textarea
-        required={label === "Soal"}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="min-h-24 rounded-lg border border-violet-100 bg-white p-3 text-sm font-bold outline-none focus:border-violet-300"
-      />
-    </label>
-  );
-}
-
-function OptionInput({ checked, label, onChange, onCheck, value }: {
-  checked: boolean;
-  label: string;
-  onChange: (value: string) => void;
-  onCheck: (label: string) => void;
-  value: string;
-}) {
-  return (
-    <label className="grid gap-2 text-sm font-black text-foreground">
-      Pilihan {label}
-      <div className="flex items-center gap-3">
-        <input type="radio" checked={checked} onChange={() => onCheck(label)} />
-        <input
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className="h-11 flex-1 rounded-lg border border-violet-100 bg-white px-3 text-sm font-bold outline-none focus:border-violet-300"
-        />
-      </div>
-    </label>
   );
 }

@@ -10,6 +10,8 @@ export type TeacherExam = {
   pin: string;
   shareToken: string;
   status: TeacherExamStatus;
+  accessExpiresAt: string | null;
+  creditConsumedAt: string | null;
   createdAt: string;
   _count?: {
     participants: number;
@@ -33,6 +35,7 @@ export type TeacherQuestion = {
 };
 
 export type TeacherExamDetail = TeacherExam & {
+  participants: Array<{ id: string }>;
   questions: TeacherQuestion[];
 };
 
@@ -91,18 +94,6 @@ export function createTeacherExam(
   token: string,
 ) {
   return apiFetch<TeacherExam>("/teacher-exams", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    token,
-  });
-}
-
-export function addTeacherQuestion(
-  examId: string,
-  payload: CreateTeacherQuestionPayload,
-  token: string,
-) {
-  return apiFetch<TeacherQuestion>(`/teacher-exams/${examId}/questions`, {
     method: "POST",
     body: JSON.stringify(payload),
     token,

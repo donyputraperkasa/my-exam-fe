@@ -3,12 +3,14 @@
 import { Plus, Search } from "lucide-react";
 
 type TeacherExamToolbarProps = {
+  canCreate?: boolean;
   onCreate: () => void;
   onSearch: (value: string) => void;
   query: string;
 };
 
 export function TeacherExamToolbar({
+  canCreate = true,
   onCreate,
   onSearch,
   query,
@@ -27,11 +29,12 @@ export function TeacherExamToolbar({
         </label>
         <button
           type="button"
+          disabled={!canCreate}
           onClick={onCreate}
-          className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-accent px-6 text-sm font-black text-foreground shadow-lg shadow-amber-100 transition hover:brightness-105"
+          className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-accent px-6 text-sm font-black text-foreground shadow-lg shadow-amber-100 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Plus className="h-5 w-5" />
-          Buat Soal
+          {canCreate ? "Buat Soal" : "Soal Dikunci"}
         </button>
       </div>
     </section>
