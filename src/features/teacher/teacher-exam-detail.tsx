@@ -5,7 +5,6 @@ import { Copy, Send } from "lucide-react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import type { UserRole } from "@/types/auth";
 import { filterTeacherQuestions } from "./filter-teacher-questions";
-import { TeacherExamBreadcrumbs } from "./teacher-exam-breadcrumbs";
 import { TeacherExamToolbar } from "./teacher-exam-toolbar";
 import { TeacherQuestionList } from "./teacher-question-list";
 import { TeacherQuestionModal } from "./teacher-question-modal";
@@ -36,7 +35,6 @@ export function TeacherExamDetail(props: TeacherExamDetailProps) {
       {error ? <Notice danger text={error} /> : null}
       {exam ? (
         <section className="grid gap-5">
-          <TeacherExamBreadcrumbs role={props.role} />
           <ExamInfo
             pin={exam.pin}
             publish={publish}

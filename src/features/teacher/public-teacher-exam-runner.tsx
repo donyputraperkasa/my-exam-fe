@@ -6,6 +6,8 @@ import {
   submitTeacherExam,
   type PublicTeacherExam,
 } from "./public-api";
+import { PublicTeacherExamState } from "./public-teacher-exam-state";
+import { useExamIntegrity } from "./use-exam-integrity";
 
 type PublicTeacherExamRunnerProps = {
   exam: PublicTeacherExam;
@@ -19,6 +21,7 @@ export function PublicTeacherExamRunner({
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<string | null>(null);
+  const blockedReason = useExamIntegrity(participantToken, !result);
   const question = exam.questions[index];
 
   async function choose(optionId: string) {
@@ -31,10 +34,12 @@ export function PublicTeacherExamRunner({
     setResult(`Nilai ${data.score ?? 0}. Benar ${data.correctAnswers}, salah ${data.wrongAnswers}.`);
   }
 
+  if (blockedReason) {
+    return <PublicTeacherExamState blocked message={blockedReason} />;
+  }
+
   if (result) {
-    return (
-      <ResultCard result={result} />
-    );
+    return <PublicTeacherExamState message={result} />;
   }
 
   return (
@@ -104,16 +109,5 @@ function NavButton({ disabled, onClick, text }: {
     >
       {text}
     </button>
-  );
-}
-
-function ResultCard({ result }: { result: string }) {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-5">
-      <section className="w-full max-w-xl rounded-3xl border border-violet-100 bg-white p-8 text-center shadow-sm">
-        <p className="text-sm font-black uppercase text-pink-400">Ujian selesai</p>
-        <h1 className="mt-3 text-3xl font-black">{result}</h1>
-      </section>
-    </main>
   );
 }

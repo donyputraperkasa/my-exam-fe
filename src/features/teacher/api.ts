@@ -36,6 +36,24 @@ export type TeacherExamDetail = TeacherExam & {
   questions: TeacherQuestion[];
 };
 
+export type TeacherParticipantStatus = "IN_PROGRESS" | "SUBMITTED" | "BLOCKED";
+
+export type TeacherExamParticipant = {
+  answeredQuestions: number;
+  attendanceNumber: string | null;
+  blockReason: string | null;
+  className: string;
+  correctAnswers: number;
+  currentQuestionIndex: number;
+  id: string;
+  lastActivityAt: string;
+  name: string;
+  score: number | null;
+  status: TeacherParticipantStatus;
+  violationCount: number;
+  wrongAnswers: number;
+};
+
 export type CreateTeacherExamPayload = {
   title: string;
   description?: string;
@@ -59,6 +77,13 @@ export function getTeacherExams(token: string) {
 
 export function getTeacherExam(id: string, token: string) {
   return apiFetch<TeacherExamDetail>(`/teacher-exams/${id}`, { token });
+}
+
+export function getTeacherExamParticipants(examId: string, token: string) {
+  return apiFetch<TeacherExamParticipant[]>(
+    `/teacher-exams/${examId}/participants`,
+    { token },
+  );
 }
 
 export function createTeacherExam(

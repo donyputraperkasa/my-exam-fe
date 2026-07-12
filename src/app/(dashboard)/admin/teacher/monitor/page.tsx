@@ -1,9 +1,9 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { TeacherMonitorWorkspace } from "@/features/teacher/teacher-monitor-workspace";
 
 export default function AdminTeacherMonitorPage() {
   return (
-    <DashboardPlaceholder
-      description="Nanti admin bisa memantau progres siswa yang sedang mengerjakan ujian mode guru."
+    <TeacherMonitorWorkspace
+      allowedRoles={["ADMIN"]}
       eyebrow="Admin Panel"
       role="ADMIN"
       title="Pantau Siswa"

@@ -7,6 +7,7 @@ import { MathPattern } from "@/features/landing/math-pattern";
 import { StudentPreview } from "@/features/landing/student-preview";
 import { BookOpenCheck, Calculator, ChartNoAxesCombined } from "lucide-react";
 import { Analytics } from "@vercel/analytics/next"
+import { FloatingContact } from "@/components/layout/floating-contact";
 
 const benefitIcons = [Calculator, BookOpenCheck, ChartNoAxesCombined];
 
@@ -41,6 +42,8 @@ export default function HomePage() {
       <StudentPreview />
       <HowItWorks />
       <FinalCta />
+
+      <FloatingContact />
       <CreatorFooter />
 
       <Analytics />

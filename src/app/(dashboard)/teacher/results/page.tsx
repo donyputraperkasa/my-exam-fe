@@ -1,12 +1,11 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { TeacherResultsWorkspace } from "@/features/teacher/teacher-results-workspace";
 
 export default function TeacherResultsPage() {
   return (
-    <DashboardPlaceholder
-      description="Nanti nilai siswa bisa langsung muncul setelah submit, lalu guru bisa melihat detail jawaban dan mengunduh hasil ujian."
+    <TeacherResultsWorkspace
+      allowedRoles={["TEACHER", "ADMIN"]}
       eyebrow="Teacher Mode"
       role="TEACHER"
-      title="Hasil & Unduh"
     />
   );
 }

@@ -17,6 +17,7 @@ export const appRoutes = {
     teacherExams: "/admin/teacher/exams",
     teacherExamDetail: (id: string) => `/admin/teacher/exams/${id}`,
     teacherMonitor: "/admin/teacher/monitor",
+    teacherMonitorDetail: (id: string) => `/admin/teacher/monitor/${id}`,
     teacherResults: "/admin/teacher/results",
   },
   student: {
@@ -34,6 +35,7 @@ export const appRoutes = {
     exams: "/teacher/exams",
     examDetail: (id: string) => `/teacher/exams/${id}`,
     monitor: "/teacher/monitor",
+    monitorDetail: (id: string) => `/teacher/monitor/${id}`,
     results: "/teacher/results",
   },
 };

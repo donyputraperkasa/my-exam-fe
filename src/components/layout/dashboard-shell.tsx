@@ -10,6 +10,7 @@ import { appRoutes } from "@/lib/routes";
 import type { UserRole } from "@/types/auth";
 import { AppBackground } from "./app-background";
 import { DashboardNav } from "./dashboard-nav";
+import { DashboardRouteBreadcrumbs } from "./dashboard-route-breadcrumbs";
 import { FloatingContact } from "./floating-contact";
 
 type DashboardShellProps = {
@@ -89,6 +90,7 @@ export function DashboardShell({
               </p>
             </div>
           </header>
+          <DashboardRouteBreadcrumbs role={role} title={title} />
           {children}
         </section>
       </div>

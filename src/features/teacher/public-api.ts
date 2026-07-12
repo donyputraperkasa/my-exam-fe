@@ -32,6 +32,19 @@ export type SubmitTeacherExamResult = {
   wrongAnswers: number;
 };
 
+export type TeacherExamEventType =
+  | "TAB_HIDDEN"
+  | "WINDOW_BLUR"
+  | "COPY_ATTEMPT"
+  | "PASTE_ATTEMPT"
+  | "RIGHT_CLICK";
+
+export type TeacherExamIntegrityResult = {
+  blockReason: string | null;
+  status: "IN_PROGRESS" | "SUBMITTED" | "BLOCKED";
+  violationCount: number;
+};
+
 export function getPublicTeacherExam(shareToken: string) {
   return apiFetch<PublicTeacherExam>(`/teacher-exams/public/${shareToken}`);
 }
@@ -64,5 +77,18 @@ export function submitTeacherExam(participantToken: string) {
   return apiFetch<SubmitTeacherExamResult>(
     `/teacher-exams/participants/${participantToken}/submit`,
     { method: "POST" },
+  );
+}
+
+export function recordTeacherExamEvent(
+  participantToken: string,
+  type: TeacherExamEventType,
+) {
+  return apiFetch<TeacherExamIntegrityResult>(
+    `/teacher-exams/participants/${participantToken}/events`,
+    {
+      method: "POST",
+      body: JSON.stringify({ type }),
+    },
   );
 }

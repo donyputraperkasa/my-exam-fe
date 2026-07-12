@@ -1,12 +1,11 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { TeacherResultsWorkspace } from "@/features/teacher/teacher-results-workspace";
 
 export default function AdminTeacherResultsPage() {
   return (
-    <DashboardPlaceholder
-      description="Nanti admin bisa melihat nilai akhir, detail jawaban, dan mengunduh hasil ujian."
+    <TeacherResultsWorkspace
+      allowedRoles={["ADMIN"]}
       eyebrow="Admin Panel"
       role="ADMIN"
-      title="Hasil & Unduh"
     />
   );
 }
