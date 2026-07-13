@@ -28,10 +28,12 @@ export function TopBar({
 }
 
 export function QuestionNav({
+  answered,
   current,
   setCurrent,
   total,
 }: {
+  answered?: boolean[];
   current: number;
   setCurrent: (index: number) => void;
   total: number;
@@ -46,7 +48,9 @@ export function QuestionNav({
           className={`h-12 w-12 rounded-full border text-sm font-black ${
             current === index
               ? "border-primary bg-accent text-foreground shadow-sm"
-              : "border-border bg-surface/95 hover:border-primary"
+              : answered?.[index]
+                ? "border-primary bg-primary text-white"
+                : "border-secondary/30 bg-secondary/10 text-secondary hover:border-secondary"
           }`}
         >
           {index + 1}

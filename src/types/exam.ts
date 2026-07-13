@@ -24,6 +24,9 @@ export type ExamPackage = {
   durationMinutes: number | null;
   isActive: boolean;
   isLocked?: boolean;
+  isCompleted?: boolean;
+  latestScore?: number | null;
+  completedAt?: string | null;
   _count?: { questions: number; attempts: number };
   questions?: Array<{ order?: number; question: Question }>;
 };

@@ -1,12 +1,14 @@
-import { DashboardPlaceholder } from "@/components/layout/dashboard-placeholder";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { StudentRecap } from "@/features/student/recap/student-recap";
 
 export default function StudentRecapPage() {
   return (
-    <DashboardPlaceholder
+    <DashboardShell
       eyebrow="Ruang Belajar"
       role="STUDENT"
       title="Recap Nilai"
-      description="Ringkasan skor, progres, dan bagian materi yang perlu dikejar."
-    />
+    >
+      <StudentRecap />
+    </DashboardShell>
   );
 }

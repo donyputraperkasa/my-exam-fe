@@ -12,7 +12,7 @@ type TrialExamProps = {
 };
 
 export function TrialExam({ embedded = false }: TrialExamProps) {
-  const trial = useTrialExam();
+  const trial = useTrialExam({ studentFlow: embedded });
 
   const minutes = String(Math.floor(trial.seconds / 60)).padStart(2, "0");
   const restSeconds = String(trial.seconds % 60).padStart(2, "0");
@@ -25,7 +25,7 @@ export function TrialExam({ embedded = false }: TrialExamProps) {
           minutes={minutes}
           restSeconds={restSeconds}
         />
-        <QuestionNav current={trial.current} setCurrent={trial.setCurrent} total={trial.questions.length} />
+        <QuestionNav answered={trial.questions.map((_, index) => Boolean(trial.answers[index]))} current={trial.current} setCurrent={trial.setCurrent} total={trial.questions.length} />
         <div className="relative grid gap-5 rounded-[2rem]">
           <TrialQuestionCard
             current={trial.current}
@@ -57,7 +57,8 @@ export function TrialExam({ embedded = false }: TrialExamProps) {
 
           {trial.result ? (
             <TrialResult
-              isAuthenticated={trial.setup.isAuthenticated}
+              isAuthenticated={trial.isAuthenticated}
+              isSubscribed={trial.isSubscribed}
               onRetry={trial.resetTrial}
               result={trial.result}
             />

@@ -22,6 +22,12 @@ export type ManualPaymentRequest = {
   proofImageUrl: string;
   reviewNote: string | null;
   status: ManualPaymentStatus;
+  subscription?: {
+    expiredAt: string;
+    id: string;
+    startedAt: string;
+    status: "ACTIVE" | "EXPIRED" | "CANCELLED";
+  } | null;
   user?: { email: string; id: string; name: string; role: string };
 };
 

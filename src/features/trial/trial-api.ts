@@ -25,9 +25,29 @@ export async function fetchPublicTrialQuestions() {
   }));
 }
 
-export function submitPublicTrial(answers: Record<string, string>) {
-  return apiFetch<TrialScore>("/public/trial/submit", {
+export function submitStudentTrial(
+  answers: Record<string, string>,
+  token: string,
+) {
+  return submitTrialTo("/student/trial/submit", answers, token);
+}
+
+export async function fetchStudentTrialAccess(token: string) {
+  const response = await apiFetch<{ subscription: { isActive: boolean } }>(
+    "/dashboard/me",
+    { token },
+  );
+  return response.subscription.isActive;
+}
+
+function submitTrialTo(
+  path: string,
+  answers: Record<string, string>,
+  token?: string,
+) {
+  return apiFetch<TrialScore>(path, {
     method: "POST",
+    token,
     body: JSON.stringify({
       answers: Object.entries(answers).map(([questionId, selectedOptionId]) => ({
         questionId,

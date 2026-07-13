@@ -3,10 +3,10 @@ import { getSelectedGrade, getUser } from "@/features/auth/session";
 import { appRoutes } from "@/lib/routes";
 import { getTrialQuestionsByGrade } from "./trial-data";
 
-export function getTrialSetup() {
+export function getTrialSetup(studentFlow: boolean) {
   const user = getUser();
 
-  if (!user) {
+  if (!studentFlow || !user) {
     return {
       backHref: appRoutes.home,
       backLabel: "Kembali ke beranda",

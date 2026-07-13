@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, LockKeyhole, RotateCcw } from "lucide-react";
+import { BarChart3, CheckCircle2, LockKeyhole, RotateCcw } from "lucide-react";
 import { LoginModal } from "@/features/auth/components/login-modal";
 import { RegisterModal } from "@/features/auth/components/register-modal";
 import { appRoutes } from "@/lib/routes";
@@ -10,12 +10,14 @@ import type { TrialScore } from "./trial-types";
 
 type TrialResultProps = {
   isAuthenticated: boolean;
+  isSubscribed: boolean;
   onRetry: () => void;
   result: TrialScore;
 };
 
 export function TrialResult({
   isAuthenticated,
+  isSubscribed,
   onRetry,
   result,
 }: TrialResultProps) {
@@ -58,7 +60,15 @@ export function TrialResult({
               <RotateCcw className="h-4 w-4" />
               Ulangi
             </button>
-            {isAuthenticated ? (
+            {isSubscribed ? (
+              <Link
+                href={appRoutes.student.recap}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-black text-foreground transition hover:bg-primary hover:text-white"
+              >
+                <BarChart3 className="h-4 w-4" />
+                Lihat Recap Nilai
+              </Link>
+            ) : isAuthenticated ? (
               <Link
                 href={appRoutes.student.subscription}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-black text-foreground transition hover:bg-primary hover:text-white"
