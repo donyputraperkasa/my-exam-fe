@@ -27,6 +27,8 @@ type NavItem = {
   label: string;
 };
 
+// Menu berbasis role memakai satu renderer supaya aturan sidebar tetap konsisten
+// pada dashboard admin, siswa, dan guru.
 const navItems: Record<UserRole, NavItem[]> = {
   ADMIN: [
     { label: "Dashboard", href: appRoutes.admin.dashboard, Icon: LayoutDashboard },
@@ -77,16 +79,29 @@ function NavLink({ Icon, active, href, label }: {
   href: string;
   label: string;
 }) {
+  const stateClass = active
+    ? "bg-accent text-foreground shadow-sm shadow-accent/20"
+    : "text-muted hover:bg-secondary/10 hover:text-secondary";
+
   return (
-    <Link href={href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${active ? "bg-accent text-foreground shadow-sm shadow-accent/20" : "text-muted hover:bg-secondary/10 hover:text-secondary"}`}>
+    <Link
+      href={href}
+      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${stateClass}`}
+    >
       <Icon className="h-4 w-4" />
       {label}
     </Link>
   );
 }
 
+// Halaman detail tetap menyalakan menu induknya di sidebar.
 function isActiveItem(pathname: string, href: string) {
-  return pathname === href || isNestedStudentPackage(pathname, href) || isCategoryPath(pathname, href) || isAdminTeacherPath(pathname, href);
+  return (
+    pathname === href ||
+    isNestedStudentPackage(pathname, href) ||
+    isCategoryPath(pathname, href) ||
+    isAdminTeacherPath(pathname, href)
+  );
 }
 
 function isCategoryPath(pathname: string, href: string) {

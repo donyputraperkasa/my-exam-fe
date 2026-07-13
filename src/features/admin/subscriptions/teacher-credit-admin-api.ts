@@ -2,8 +2,10 @@ import { apiFetch } from "@/lib/api/client";
 import type { PaginatedResponse } from "@/types/exam";
 
 export type AdminTeacherAccount = {
+  createdAt: string;
   email: string;
   id: string;
+  latestTeacherCreditAt: string | null;
   name: string;
   teacherCreditBalance: number;
 };

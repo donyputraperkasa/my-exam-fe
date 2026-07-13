@@ -1,7 +1,7 @@
 import { apiFetch } from "@/lib/api/client";
 import type { PaginatedResponse } from "@/types/exam";
 
-export type ActiveSubscription = {
+export type AdminSubscription = {
   expiredAt: string;
   id: string;
   startedAt: string;
@@ -10,9 +10,9 @@ export type ActiveSubscription = {
   user: { email: string; id: string; name: string };
 };
 
-export function fetchActiveSubscriptions(token: string) {
-  return apiFetch<PaginatedResponse<ActiveSubscription>>(
-    "/admin/subscriptions?status=ACTIVE&limit=100",
+export function fetchAdminSubscriptions(token: string) {
+  return apiFetch<PaginatedResponse<AdminSubscription>>(
+    "/admin/subscriptions?limit=100",
     { token },
   );
 }

@@ -1,7 +1,10 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const MAX_LINES = 120;
+// Batas ini adalah alarm maintainability, bukan target untuk memadatkan JSX.
+// File boleh lebih panjang dari aturan lama (120), tetapi tetap perlu dipecah
+// ketika melewati 200 baris atau menangani lebih dari satu tanggung jawab besar.
+const MAX_LINES = 200;
 const TARGET_DIR = "src";
 const EXTENSIONS = new Set([".ts", ".tsx", ".css"]);
 

@@ -27,6 +27,8 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
     return () => window.clearInterval(timer);
   }, []);
 
+  // Hanya trial di dalam dashboard yang membaca status subscription akun.
+  // Trial landing harus tetap dapat berjalan tanpa token maupun backend.
   useEffect(() => {
     if (!studentFlow || !token) return;
     void fetchStudentTrialAccess(token)
@@ -34,6 +36,8 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
       .catch(() => setIsSubscribed(false));
   }, [studentFlow, token]);
 
+  // Soal backend dipakai untuk trial akun supaya hasilnya dapat diverifikasi dan
+  // disimpan ke recap. Trial publik tetap memakai tepat 10 soal lokal dari setup.
   useEffect(() => {
     if (!studentFlow) return;
     void fetchPublicTrialQuestions()
@@ -65,6 +69,7 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
   }, [answers, questions]);
 
   async function submitTrial() {
+    // Alur publik dihitung seluruhnya di browser dan tidak meninggalkan data BE.
     if (!studentFlow || !isRemote || !token) {
       setResult(localResult);
       return;

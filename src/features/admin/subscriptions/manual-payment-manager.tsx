@@ -1,18 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Check, ExternalLink, X } from "lucide-react";
+import { Check, Eye, X } from "lucide-react";
 import { getToken } from "@/features/auth/session";
 import {
   getAdminManualPayments,
   reviewManualPayment,
   type ManualPaymentRequest,
 } from "@/features/payments/manual-payments-api";
-import { formatRupiah, getProductLabel, getStatusLabel } from "@/features/payments/payment-format";
+import {
+  formatRupiah,
+  getProductLabel,
+  getStatusLabel,
+} from "@/features/payments/payment-format";
+import { AdminDataTable, AdminTableCell } from "./admin-data-table";
 import { AdminListSearch } from "./admin-list-search";
+import { PaymentProofModal } from "./payment-proof-modal";
+import { formatAdminDate } from "./subscription-admin-format";
+
+const headers = ["Nama", "Jenis pembayaran", "Tanggal", "Nominal", "Status", "Aksi"];
 
 export function ManualPaymentManager() {
   const [items, setItems] = useState<ManualPaymentRequest[]>([]);
+  const [selectedProof, setSelectedProof] = useState<ManualPaymentRequest | null>(null);
   const [reviewing, setReviewing] = useState("");
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -61,31 +71,46 @@ export function ManualPaymentManager() {
       <h2 className="mt-1 text-2xl font-black">Verifikasi transfer manual</h2>
       <AdminListSearch value={query} onChange={setQuery} placeholder="Cari nama, email, invoice, atau produk..." />
       {error ? <p className="mt-3 text-sm font-bold text-red-500">{error}</p> : null}
-      <div className="mt-5 grid gap-3">
-        {!filteredItems.length ? <p className="rounded-xl bg-background/70 p-4 text-sm font-bold text-muted">Data pembayaran tidak ditemukan.</p> : null}
+      <AdminDataTable headers={headers} empty={!filteredItems.length} emptyMessage="Data pembayaran tidak ditemukan." minWidth="min-w-[1100px]">
         {filteredItems.map((item) => (
-          <article key={item.id} className="grid gap-4 rounded-xl bg-background/70 p-4 lg:grid-cols-[1fr_auto]">
-            <div>
-              <p className="font-black">{item.user?.name} - {getProductLabel(item.product)}</p>
-              <p className="mt-1 text-sm font-bold text-muted">{item.user?.email} · {item.invoiceCode}</p>
-              <p className="mt-2 text-lg font-black text-violet-600">{formatRupiah(item.amount)}</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <a href={item.proofImageUrl} target="_blank" rel="noreferrer" className="inline-flex h-10 items-center gap-2 rounded-lg border border-violet-100 px-3 text-sm font-black text-violet-600">
-                <ExternalLink className="h-4 w-4" /> Bukti
-              </a>
-              {item.status === "PENDING" ? (
-                <>
-                  <button disabled={reviewing === item.id} onClick={() => void review(item.id, true)} className="inline-flex h-10 items-center gap-2 rounded-lg bg-green-100 px-3 text-sm font-black text-green-700"><Check className="h-4 w-4" /> Setujui</button>
-                  <button disabled={reviewing === item.id} onClick={() => void review(item.id, false)} className="inline-flex h-10 items-center gap-2 rounded-lg bg-red-50 px-3 text-sm font-black text-red-600"><X className="h-4 w-4" /> Tolak</button>
-                </>
-              ) : <span className="rounded-lg bg-violet-50 px-3 py-2 text-sm font-black text-violet-600">{getStatusLabel(item.status)}</span>}
-            </div>
-          </article>
+          <PaymentRow key={item.id} item={item} reviewing={reviewing === item.id} onProof={() => setSelectedProof(item)} onReview={review} />
         ))}
-      </div>
+      </AdminDataTable>
+      <PaymentProofModal item={selectedProof} onClose={() => setSelectedProof(null)} />
     </section>
   );
+}
+
+type PaymentRowProps = {
+  item: ManualPaymentRequest;
+  onProof: () => void;
+  onReview: (id: string, approved: boolean) => Promise<void>;
+  reviewing: boolean;
+};
+
+function PaymentRow({ item, onProof, onReview, reviewing }: PaymentRowProps) {
+  const statusClass = getPaymentStatusClass(item.status);
+  return (
+    <tr className="font-bold transition hover:bg-violet-50/35">
+      <AdminTableCell><p className="font-black">{item.user?.name ?? "-"}</p><p className="mt-1 text-xs text-muted">{item.user?.email}</p></AdminTableCell>
+      <AdminTableCell><p>{getProductLabel(item.product)}</p><p className="mt-1 text-xs text-muted">{item.invoiceCode}</p></AdminTableCell>
+      <AdminTableCell>{formatAdminDate(item.createdAt)}</AdminTableCell>
+      <AdminTableCell><span className="font-black text-violet-700">{formatRupiah(item.amount)}</span></AdminTableCell>
+      <AdminTableCell><span className={`inline-flex rounded-full px-3 py-1 text-xs font-black ${statusClass}`}>{getStatusLabel(item.status)}</span></AdminTableCell>
+      <AdminTableCell><div className="flex flex-wrap gap-2"><button type="button" onClick={onProof} className="inline-flex h-9 items-center gap-2 rounded-lg border border-violet-200 px-3 text-xs font-black text-violet-700 hover:bg-violet-50"><Eye className="h-4 w-4" /> Bukti</button>{item.status === "PENDING" ? <ReviewButtons disabled={reviewing} itemId={item.id} onReview={onReview} /> : null}</div></AdminTableCell>
+    </tr>
+  );
+}
+
+function ReviewButtons({ disabled, itemId, onReview }: { disabled: boolean; itemId: string; onReview: PaymentRowProps["onReview"] }) {
+  return <><button type="button" disabled={disabled} onClick={() => void onReview(itemId, true)} className="inline-flex h-9 items-center gap-1 rounded-lg bg-emerald-50 px-3 text-xs font-black text-emerald-700 disabled:opacity-50"><Check className="h-4 w-4" /> Setujui</button><button type="button" disabled={disabled} onClick={() => void onReview(itemId, false)} className="inline-flex h-9 items-center gap-1 rounded-lg bg-red-50 px-3 text-xs font-black text-red-600 disabled:opacity-50"><X className="h-4 w-4" /> Tolak</button></>;
+}
+
+function getPaymentStatusClass(status: ManualPaymentRequest["status"]) {
+  if (status === "PAID") return "bg-emerald-50 text-emerald-700";
+  if (status === "PENDING") return "bg-amber-50 text-amber-700";
+  if (status === "FAILED") return "bg-red-50 text-red-600";
+  return "bg-slate-100 text-slate-600";
 }
 
 function getMessage(error: unknown) {
