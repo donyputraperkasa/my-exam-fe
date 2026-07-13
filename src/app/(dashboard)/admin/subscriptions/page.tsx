@@ -1,5 +1,5 @@
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { TeacherCreditManager } from "@/features/admin/subscriptions/teacher-credit-manager";
+import { SubscriptionAdminWorkspace } from "@/features/admin/subscriptions/subscription-admin-workspace";
 
 export default function AdminSubscriptionsPage() {
   return (
@@ -8,7 +8,7 @@ export default function AdminSubscriptionsPage() {
       role="ADMIN"
       title="Subscription & Kredit"
     >
-      <TeacherCreditManager />
+      <SubscriptionAdminWorkspace />
     </DashboardShell>
   );
 }

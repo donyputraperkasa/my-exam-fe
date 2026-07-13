@@ -5,13 +5,17 @@ import Link from "next/link";
 import { LockKeyhole, PackageCheck, Sparkles } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
 import type { ExamPackage } from "@/types/exam";
+import { getToken } from "@/features/auth/session";
 import { fetchStudentPackages } from "./student-packages-api";
 
 export function StudentPackageList() {
   const [packages, setPackages] = useState<ExamPackage[]>([]);
 
   useEffect(() => {
-    void fetchStudentPackages()
+    const token = getToken();
+    if (!token) return;
+
+    void fetchStudentPackages(token)
       .then((response) => setPackages(response.data))
       .catch(() => setPackages([]));
   }, []);
@@ -40,7 +44,7 @@ function TrialCard() {
 }
 
 function PackageCard({ item }: { item: ExamPackage }) {
-  const locked = item.accessType === "PREMIUM";
+  const locked = Boolean(item.isLocked);
 
   return (
     <article className={`relative overflow-hidden rounded-lg border p-5 shadow-sm ${locked ? "border-purple-200 bg-gradient-to-br from-purple-50 via-white to-rose-50" : "border-border bg-surface"}`}>

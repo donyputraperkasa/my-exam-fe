@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, LockKeyhole } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
 import type { ExamPackage } from "@/types/exam";
+import { getToken } from "@/features/auth/session";
 import { fetchStudentPackage } from "./student-packages-api";
 
 type StudentPackageExamProps = {
@@ -14,17 +15,23 @@ type StudentPackageExamProps = {
 export function StudentPackageExam({ packageId }: StudentPackageExamProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [examPackage, setExamPackage] = useState<ExamPackage | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
-    void fetchStudentPackage(packageId).then(setExamPackage).catch(() => undefined);
+    const token = getToken();
+    if (!token) return;
+
+    void fetchStudentPackage(packageId, token)
+      .then(setExamPackage)
+      .catch(() => setIsLocked(true));
   }, [packageId]);
+
+  if (isLocked) {
+    return <LockedPackage />;
+  }
 
   if (!examPackage) {
     return <div className="rounded-lg border border-border bg-white/88 p-5 text-sm font-bold text-muted">Memuat paket...</div>;
-  }
-
-  if (examPackage.accessType === "PREMIUM") {
-    return <LockedPackage />;
   }
 
   const questions = examPackage.questions ?? [];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Coins, Plus } from "lucide-react";
 import { getToken } from "@/features/auth/session";
 import {
@@ -8,12 +8,20 @@ import {
   grantTeacherCredit,
   type AdminTeacherAccount,
 } from "./teacher-credit-admin-api";
+import { AdminListSearch } from "./admin-list-search";
 
 export function TeacherCreditManager() {
   const [teachers, setTeachers] = useState<AdminTeacherAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [grantingId, setGrantingId] = useState("");
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
+  const filteredTeachers = useMemo(() => {
+    const keyword = query.toLowerCase();
+    return teachers.filter((teacher) =>
+      `${teacher.name} ${teacher.email}`.toLowerCase().includes(keyword),
+    );
+  }, [query, teachers]);
 
   const load = useCallback(async () => {
     const token = getToken();
@@ -62,13 +70,14 @@ export function TeacherCreditManager() {
           <h2 className="mt-1 text-2xl font-black">Aktivasi publish manual</h2>
         </div>
       </div>
+      <AdminListSearch value={query} onChange={setQuery} placeholder="Cari nama atau email guru..." />
       {error ? <p className="mt-4 text-sm font-bold text-red-500">{error}</p> : null}
       <div className="mt-5 grid gap-3">
         {loading ? <p className="text-sm font-bold text-muted">Memuat akun guru...</p> : null}
-        {!loading && !teachers.length ? (
-          <p className="rounded-xl bg-background/70 p-4 text-sm font-bold text-muted">Belum ada akun guru.</p>
+        {!loading && !filteredTeachers.length ? (
+          <p className="rounded-xl bg-background/70 p-4 text-sm font-bold text-muted">Akun guru tidak ditemukan.</p>
         ) : null}
-        {teachers.map((teacher) => (
+        {filteredTeachers.map((teacher) => (
           <article key={teacher.id} className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-background/70 p-4">
             <div>
               <p className="font-black">{teacher.name}</p>

@@ -1,4 +1,3 @@
-import type { StudentGrade } from "@/types/auth";
 import { AuthField } from "./auth-field";
 import { GradeSelect } from "./grade-select";
 
@@ -6,14 +5,14 @@ export type RegisterAccountType = "STUDENT" | "TEACHER";
 
 type RegisterAccountFieldsProps = {
   accountType: RegisterAccountType;
-  grade: StudentGrade;
+  gradeId: string;
   name: string;
   schoolAddress: string;
   schoolName: string;
   teacherSubject: string;
   variant?: "plain" | "modal";
   onAccountTypeChange: (value: RegisterAccountType) => void;
-  onGradeChange: (value: StudentGrade) => void;
+  onGradeChange: (id: string, name: string) => void;
   onNameChange: (value: string) => void;
   onSchoolAddressChange: (value: string) => void;
   onSchoolNameChange: (value: string) => void;
@@ -26,7 +25,7 @@ export function RegisterAccountFields(props: RegisterAccountFieldsProps) {
       <AuthField label="Nama" value={props.name} onChange={props.onNameChange} />
       <AccountTypeTabs {...props} />
       {props.accountType === "STUDENT" ? (
-        <GradeSelect value={props.grade} onChange={props.onGradeChange} />
+        <GradeSelect value={props.gradeId} onChange={props.onGradeChange} />
       ) : (
         <TeacherFields {...props} />
       )}

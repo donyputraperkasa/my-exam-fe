@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { StudentGrade } from "@/types/auth";
 import type { RegisterPayload } from "./api";
 import { saveSelectedGrade } from "./session";
@@ -13,7 +13,13 @@ export function useRegisterAccount() {
   const [schoolName, onSchoolNameChange] = useState("");
   const [teacherSubject, onTeacherSubjectChange] = useState("");
   const [schoolAddress, onSchoolAddressChange] = useState("");
-  const [grade, onGradeChange] = useState<StudentGrade>("SD");
+  const [gradeId, setGradeId] = useState("");
+  const [gradeName, setGradeName] = useState("");
+
+  const onGradeChange = useCallback((id: string, name: string) => {
+    setGradeId(id);
+    setGradeName(name);
+  }, []);
 
   function getPayload(email: string, password: string): RegisterPayload {
     return {
@@ -21,7 +27,7 @@ export function useRegisterAccount() {
       email,
       password,
       accountType,
-      gradeId: accountType === "STUDENT" ? grade : undefined,
+      gradeId: accountType === "STUDENT" ? gradeId : undefined,
       schoolName: accountType === "TEACHER" ? schoolName : undefined,
       teacherSubject: accountType === "TEACHER" ? teacherSubject : undefined,
       schoolAddress:
@@ -33,7 +39,7 @@ export function useRegisterAccount() {
 
   function saveGrade() {
     if (accountType === "STUDENT") {
-      saveSelectedGrade(grade);
+      if (isStudentGrade(gradeName)) saveSelectedGrade(gradeName);
     }
   }
 
@@ -41,7 +47,7 @@ export function useRegisterAccount() {
     accountType,
     fieldsProps: {
       accountType,
-      grade,
+      gradeId,
       name,
       schoolAddress,
       schoolName,
@@ -56,4 +62,8 @@ export function useRegisterAccount() {
     getPayload,
     saveGrade,
   };
+}
+
+function isStudentGrade(value: string): value is StudentGrade {
+  return ["SD", "SMP", "SMA", "SMK"].includes(value);
 }

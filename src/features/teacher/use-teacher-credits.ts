@@ -38,8 +38,28 @@ export function useTeacherCredits() {
   }, []);
 
   useEffect(() => {
-    void refresh();
-  }, [refresh]);
+    const token = getToken();
+    if (!token) {
+      Promise.resolve().then(() => {
+        setError("Sesi login tidak ditemukan. Silakan login kembali.");
+        setLoading(false);
+      });
+      return;
+    }
+    getTeacherCredits(token)
+      .then((result) => {
+        setCredits(result);
+        setError(null);
+      })
+      .catch((caughtError) => {
+        setError(
+          caughtError instanceof Error
+            ? caughtError.message
+            : "Gagal mengambil data kredit guru.",
+        );
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return { credits, error, loading, refresh };
 }

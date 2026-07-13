@@ -23,6 +23,7 @@ export type ExamPackage = {
   accessType: AccessType;
   durationMinutes: number | null;
   isActive: boolean;
+  isLocked?: boolean;
   _count?: { questions: number; attempts: number };
   questions?: Array<{ order?: number; question: Question }>;
 };
