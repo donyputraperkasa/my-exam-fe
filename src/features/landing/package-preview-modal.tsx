@@ -7,12 +7,14 @@ import { previewPackages } from "./package-preview-data";
 type PackagePreviewModalProps = {
   open: boolean;
   onClose: () => void;
+  onRegister: () => void;
   onStartFree: () => void;
 };
 
 export function PackagePreviewModal({
   open,
   onClose,
+  onRegister,
   onStartFree,
 }: PackagePreviewModalProps) {
   if (!open) {
@@ -55,6 +57,7 @@ export function PackagePreviewModal({
             <PackagePreviewCard
               key={item.title}
               {...item}
+              onRegister={onRegister}
               onStartFree={onStartFree}
             />
           ))}

@@ -90,6 +90,10 @@ export function HeroSection() {
       <PackagePreviewModal
         open={isPackageOpen}
         onClose={() => setIsPackageOpen(false)}
+        onRegister={() => {
+          setIsPackageOpen(false);
+          setIsRegisterOpen(true);
+        }}
         onStartFree={() => {
           setIsPackageOpen(false);
           router.push(appRoutes.trial);

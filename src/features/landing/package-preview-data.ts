@@ -1,4 +1,6 @@
-import { BookOpenCheck, Lock, Presentation, Trophy } from "lucide-react";
+import { BookOpenCheck, CalendarDays, GraduationCap, Lock, Sparkles, Clipboard } from "lucide-react";
+
+export type PackagePreviewAction = "free" | "register" | "coming-soon" | "development";
 
 export const previewPackages = [
   {
@@ -9,24 +11,30 @@ export const previewPackages = [
     Icon: BookOpenCheck,
     badge: "Starter",
     tone: "slate",
+    action: "free" as const,
+    actionLabel: "Mulai Gratis",
   },
   {
-    title: "Paket Premium 1",
-    price: "Segera hadir",
-    meta: "Latihan intensif selama 30 hari.",
-    features: ["Akses semua paket", "Pembahasan lengkap", "Recap nilai"],
-    Icon: Trophy,
+    title: "Subscription Siswa 1 Bulan",
+    price: "Rp39.000",
+    meta: "Cocok untuk persiapan intensif menjelang ujian.",
+    features: ["Akses semua paket premium", "Pembahasan video", "Recap nilai selama 30 hari"],
+    Icon: CalendarDays,
     badge: "Paling Populer",
     tone: "violet",
+    action: "register" as const,
+    actionLabel: "Daftar Sekarang",
   },
   {
-    title: "Paket Premium 2",
-    price: "Segera hadir",
-    meta: "Lebih hemat untuk latihan rutin.",
+    title: "Subscription Siswa 3 Bulan",
+    price: "Rp99.000",
+    meta: "Lebih hemat untuk latihan bertahap sampai siap.",
     features: ["Semua fitur premium", "Masa aktif 90 hari", "Persiapan jangka panjang"],
-    Icon: Lock,
-    badge: "Best Value",
+    Icon: Sparkles,
+    badge: "Paling Hemat",
     tone: "amber",
+    action: "register" as const,
+    actionLabel: "Daftar Sekarang",
   },
   {
     title: "Paket Premium 3",
@@ -34,16 +42,31 @@ export const previewPackages = [
     meta: "Paket lanjutan untuk drilling per materi.",
     features: ["Pembahasan mendalam", "Latihan tambahan", "Target skor lebih tinggi"],
     Icon: Lock,
-    badge: "Locked",
+    badge: "Segera Hadir",
     tone: "violet",
+    action: "coming-soon" as const,
+    actionLabel: "Segera Hadir",
   },
   {
-    title: "Mode Ujian",
-    price: "Segera hadir",
-    meta: "Paket ujian untuk guru dengan link dan PIN murid.",
-    features: ["Buat ujian sendiri", "Share link ke murid", "Mode fokus ujian", "Download dan lihat recap nilai"],
-    Icon: Presentation,
-    badge: "Coming Soon",
-    tone: "amber",
+    title: "Booking Les Private",
+    price: "Dalam pengembangan",
+    meta: "Pendampingan belajar personal bersama pengajar.",
+    features: ["Pilih jadwal belajar", "Bahas materi yang sulit", "Sesi belajar lebih personal"],
+    Icon: GraduationCap,
+    badge: "Dalam Pengembangan",
+    tone: "sky",
+    action: "development" as const,
+    actionLabel: "Dalam Pengembangan",
   },
+  {
+    title: "Mode Ujian Online",
+    price: "49.000",
+    meta: "Fitur khusus untuk guru yang ingin mencoba ujian online.",
+    features: ["Pembahasan mendalam", "Latihan tambahan", "Target skor lebih tinggi"],
+    Icon: Clipboard,
+    badge: "Khusus Guru",
+    tone: "violet",
+    action: "register" as const,
+    actionLabel: "Coba Sekarang",
+  }
 ];

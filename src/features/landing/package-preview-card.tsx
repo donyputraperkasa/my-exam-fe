@@ -1,10 +1,14 @@
 import type { LucideIcon } from "lucide-react";
+import type { PackagePreviewAction } from "./package-preview-data";
 
 type PackagePreviewCardProps = {
   Icon: LucideIcon;
+  action: PackagePreviewAction;
+  actionLabel: string;
   badge: string;
   features: string[];
   meta: string;
+  onRegister: () => void;
   onStartFree: () => void;
   price: string;
   title: string;
@@ -15,25 +19,28 @@ const tones: Record<string, string> = {
   amber: "border-amber-200 from-white via-amber-50 to-yellow-100 text-amber-700",
   slate: "border-slate-200 from-white via-slate-50 to-slate-100 text-slate-900",
   violet: "border-violet-200 from-white via-violet-50 to-indigo-100 text-violet-700",
+  sky: "border-sky-200 from-white via-sky-50 to-cyan-100 text-sky-700",
 };
 
 export function PackagePreviewCard({
   Icon,
+  action,
+  actionLabel,
   badge,
   features,
   meta,
+  onRegister,
   onStartFree,
   price,
   title,
   tone,
 }: PackagePreviewCardProps) {
-  const free = title === "Free";
+  const interactive = action === "free" || action === "register";
+  const handleAction = action === "free" ? onStartFree : onRegister;
 
   return (
-    <button
-      type="button"
-      onClick={free ? onStartFree : undefined}
-      className={`flex min-h-[360px] flex-col rounded-3xl border bg-gradient-to-br p-5 text-left shadow-lg transition hover:-translate-y-1 ${tones[tone]}`}
+    <article
+      className={`flex min-h-[360px] flex-col rounded-2xl border bg-gradient-to-br p-5 text-left shadow-lg transition hover:-translate-y-1 ${tones[tone]}`}
     >
       <div className="flex items-start justify-between gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-foreground text-white">
@@ -54,9 +61,15 @@ export function PackagePreviewCard({
         ))}
       </ul>
       
-      <span className="mt-6 w-full rounded-xl bg-accent px-4 py-3 text-center text-sm font-black text-foreground">
-        {free ? "Mulai Gratis" : "Segera Hadir"}
-      </span>
-    </button>
+      {interactive ? (
+        <button type="button" onClick={handleAction} className="mt-6 w-full rounded-xl bg-accent px-4 py-3 text-center text-sm font-black text-foreground transition hover:bg-amber-400">
+          {actionLabel}
+        </button>
+      ) : (
+        <span className="mt-6 w-full rounded-xl bg-white/75 px-4 py-3 text-center text-sm font-black text-muted shadow-sm">
+          {actionLabel}
+        </span>
+      )}
+    </article>
   );
 }
