@@ -55,10 +55,11 @@ const navItems: Record<UserRole, NavItem[]> = {
 };
 
 type DashboardNavProps = {
+  onNavigate?: () => void;
   role: UserRole;
 };
 
-export function DashboardNav({ role }: DashboardNavProps) {
+export function DashboardNav({ onNavigate, role }: DashboardNavProps) {
   const pathname = usePathname();
 
   return (
@@ -66,18 +67,26 @@ export function DashboardNav({ role }: DashboardNavProps) {
       {navItems[role].map(({ label, href, Icon }) => {
         const active = isActiveItem(pathname, href);
         return (
-          <NavLink key={label} Icon={Icon} active={active} href={href} label={label} />
+          <NavLink
+            key={label}
+            Icon={Icon}
+            active={active}
+            href={href}
+            label={label}
+            onNavigate={onNavigate}
+          />
         );
       })}
     </nav>
   );
 }
 
-function NavLink({ Icon, active, href, label }: {
+function NavLink({ Icon, active, href, label, onNavigate }: {
   Icon: LucideIcon;
   active: boolean;
   href: string;
   label: string;
+  onNavigate?: () => void;
 }) {
   const stateClass = active
     ? "bg-accent text-foreground shadow-sm shadow-accent/20"
@@ -86,6 +95,7 @@ function NavLink({ Icon, active, href, label }: {
   return (
     <Link
       href={href}
+      onClick={onNavigate}
       className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${stateClass}`}
     >
       <Icon className="h-4 w-4" />
