@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookOpenCheck, CalendarDays, GraduationCap, Lock, Sparkles } from "lucide-react";
+import { BookOpenCheck, CalendarDays, Lock, Sparkles } from "lucide-react";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { ManualPaymentHistory } from "@/features/payments/manual-payment-history";
 import { ManualPaymentModal } from "@/features/payments/manual-payment-modal";
