@@ -11,8 +11,9 @@ npm run dev
 ```
 
 - Frontend: `http://localhost:3000`
-- `NEXT_PUBLIC_API_URL` harus mengarah ke backend, misalnya
-  `http://localhost:4000`.
+- `NEXT_PUBLIC_API_URL` harus berisi URL lengkap backend, misalnya
+  `http://localhost:4000` untuk lokal atau
+  `https://my-exam-be-production.up.railway.app` untuk production.
 
 ## Struktur
 
