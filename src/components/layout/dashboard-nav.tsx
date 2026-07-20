@@ -91,8 +91,8 @@ function NavLink({ Icon, active, href, label, onNavigate }: {
   onNavigate?: () => void;
 }) {
   const stateClass = active
-    ? "bg-accent text-foreground shadow-sm shadow-accent/20"
-    : "text-muted hover:bg-secondary/10 hover:text-secondary";
+    ? "bg-primary text-white shadow-sm shadow-primary/20"
+    : "text-foreground/75 hover:bg-violet-50 hover:text-primary";
 
   return (
     <Link

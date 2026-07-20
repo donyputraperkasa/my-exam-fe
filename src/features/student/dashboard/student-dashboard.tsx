@@ -80,7 +80,7 @@ function Recommendation({ premium }: { premium: boolean }) {
 function AccountStatus({ dashboard, premium }: { dashboard: StudentRecapResponse | null; premium: boolean }) {
   const activeUntil = dashboard?.subscription.activeUntil;
   return (
-    <div className={`rounded-lg border p-5 shadow-sm ${premium ? "border-violet-700 bg-[#5b21b6] text-white" : "border-violet-200 bg-violet-50 text-foreground"}`}>
+    <div className={`rounded-lg border p-5 shadow-sm ${premium ? "border-violet-700 bg-primary text-white" : "border-violet-200 bg-violet-50 text-foreground"}`}>
       <span className={`flex h-11 w-11 items-center justify-center rounded-lg ${premium ? "bg-white/10 text-violet-100" : "bg-violet-100 text-primary"}`}>
         <ShieldCheck className="h-5 w-5" />
       </span>

@@ -12,6 +12,11 @@ import { getToken, getUser, saveSession } from "../session";
 import { useRegisterAccount } from "../use-register-account";
 import { AuthField } from "./auth-field";
 import { AuthSwitch } from "./auth-switch";
+import {
+  AuthTransitionOverlay,
+  type AuthTransition,
+  waitForAuthTransition,
+} from "./auth-transition-overlay";
 import { RegisterAccountFields } from "./register-account-fields";
 
 type AuthMode = "login" | "register";
@@ -27,6 +32,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [transition, setTransition] = useState<AuthTransition | null>(null);
   const isRegister = mode === "register";
   const switchHref = isRegister ? appRoutes.auth.login : appRoutes.auth.register;
 
@@ -52,6 +58,8 @@ export function AuthForm({ mode }: AuthFormProps) {
       if (isRegister) {
         registerAccount.saveGrade();
       }
+      setTransition(isRegister ? "register" : "login");
+      await waitForAuthTransition();
       router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
       setError(getAuthErrorMessage(caughtError));
@@ -111,6 +119,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           <AuthSwitch mode={mode} onSwitch={() => router.push(switchHref)} />
         </form>
       </section>
+      {transition ? <AuthTransitionOverlay action={transition} /> : null}
     </main>
   );
 }

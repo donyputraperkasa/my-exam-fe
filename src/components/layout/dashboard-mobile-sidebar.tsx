@@ -38,7 +38,7 @@ export function DashboardMobileSidebar({
         role="dialog"
         aria-label="Menu dashboard"
         aria-modal="true"
-        className={`absolute inset-y-0 left-0 w-[min(86vw,320px)] border-r border-border bg-white shadow-2xl transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`absolute inset-y-0 left-0 w-[min(86vw,320px)] border-r border-violet-200 bg-[#ede9fe] shadow-2xl transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <DashboardSidebar
           eyebrow={eyebrow}

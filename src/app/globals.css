@@ -46,7 +46,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-a {
+/* Dashboard memakai palet tersendiri agar seluruh role konsisten tanpa
+   mengubah identitas warna landing page. */
+.dashboard-theme {
+  --background: #f7f5ff;
+  --foreground: #2f2250;
+  --surface: #ffffff;
+  --muted: #75698d;
+  --border: #e4dcf5;
+  --primary: #6d28d9;
+  --secondary: #7c3aed;
+  --accent: #6d28d9;
+}
+
+.dashboard-theme .bg-accent {
+  color: var(--primary-foreground);
+}
+
+a:not([class]) {
   color: inherit;
+}
+
+a {
   text-decoration: none;
 }

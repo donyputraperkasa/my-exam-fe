@@ -11,10 +11,17 @@ import { FloatingContact } from "@/components/layout/floating-contact";
 
 const benefitIcons = [Calculator, BookOpenCheck, ChartNoAxesCombined];
 
-export default function HomePage() {
+type HomePageProps = {
+  searchParams: Promise<{ auth?: string | string[] }>;
+};
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { auth } = await searchParams;
+  const initialAuthMode = auth === "login" || auth === "register" ? auth : null;
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <HeroSection />
+      <HeroSection initialAuthMode={initialAuthMode} />
       <section className="relative overflow-hidden bg-[#f4f7fb] px-6 py-12">
         <MathPattern />
         <div className="relative mx-auto grid w-full max-w-6xl gap-4 md:grid-cols-3">

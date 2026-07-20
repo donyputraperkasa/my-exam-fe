@@ -1,21 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LoginModal } from "@/features/auth/components/login-modal";
 import { RegisterModal } from "@/features/auth/components/register-modal";
+import { getDashboardPath } from "@/features/auth/redirect";
+import { getToken, getUser } from "@/features/auth/session";
 import { appRoutes } from "@/lib/routes";
 import { HeroActions } from "./hero-actions";
 import { HeroPracticeCard } from "./hero-practice-card";
 import { PackagePreviewModal } from "./package-preview-modal";
 import { StatsRow } from "./stats-row";
 
-export function HeroSection() {
+type LandingAuthMode = "login" | "register" | null;
+
+export function HeroSection({
+  initialAuthMode = null,
+}: {
+  initialAuthMode?: LandingAuthMode;
+}) {
   const router = useRouter();
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(initialAuthMode === "login");
   const [isPackageOpen, setIsPackageOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(
+    initialAuthMode === "register",
+  );
+
+  useEffect(() => {
+    if (!initialAuthMode) return;
+
+    const url = new URL(window.location.href);
+    const user = getUser();
+    if (getToken() && user) {
+      router.replace(getDashboardPath(user.role));
+      return;
+    }
+
+    url.searchParams.delete("auth");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [initialAuthMode, router]);
 
   return (
     <>

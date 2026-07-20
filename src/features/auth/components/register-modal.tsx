@@ -10,6 +10,10 @@ import { saveSession } from "../session";
 import { useRegisterAccount } from "../use-register-account";
 import { AuthField } from "./auth-field";
 import { AuthModalHeader } from "./auth-modal-header";
+import {
+  AuthTransitionOverlay,
+  waitForAuthTransition,
+} from "./auth-transition-overlay";
 import { RegisterAccountFields } from "./register-account-fields";
 
 type RegisterModalProps = {
@@ -29,6 +33,7 @@ export function RegisterModal({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   if (!open) {
     return null;
@@ -43,6 +48,8 @@ export function RegisterModal({
       const session = await register(registerAccount.getPayload(email, password));
       saveSession(session);
       registerAccount.saveGrade();
+      setSuccess(true);
+      await waitForAuthTransition();
       onClose();
       router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
@@ -53,6 +60,7 @@ export function RegisterModal({
   }
 
   return (
+    <>
     <div
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]/50 px-4 backdrop-blur-sm"
@@ -108,5 +116,7 @@ export function RegisterModal({
         </div>
       </section>
     </div>
+    {success ? <AuthTransitionOverlay action="register" /> : null}
+    </>
   );
 }

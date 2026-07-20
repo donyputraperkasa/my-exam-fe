@@ -8,6 +8,10 @@ import { getDashboardPath } from "../redirect";
 import { saveSession } from "../session";
 import { AuthField } from "./auth-field";
 import { AuthModalHeader } from "./auth-modal-header";
+import {
+  AuthTransitionOverlay,
+  waitForAuthTransition,
+} from "./auth-transition-overlay";
 
 type LoginModalProps = {
   open: boolean;
@@ -25,6 +29,7 @@ export function LoginModal({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   if (!open) {
     return null;
@@ -38,6 +43,8 @@ export function LoginModal({
     try {
       const session = await login({ email, password });
       saveSession(session);
+      setSuccess(true);
+      await waitForAuthTransition();
       onClose();
       router.replace(getDashboardPath(session.user.role));
     } catch (caughtError) {
@@ -55,6 +62,7 @@ export function LoginModal({
   }
 
   return (
+    <>
     <div
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]/50 px-4 backdrop-blur-sm"
@@ -109,5 +117,7 @@ export function LoginModal({
         </div>
       </section>
     </div>
+    {success ? <AuthTransitionOverlay action="login" /> : null}
+    </>
   );
 }

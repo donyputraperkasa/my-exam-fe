@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Menu } from "lucide-react";
+import { AuthTransitionOverlay } from "@/features/auth/components/auth-transition-overlay";
 import { useAuthGuard } from "@/features/auth/use-auth-guard";
 import { clearSession } from "@/features/auth/session";
 import { useIdleLogout } from "@/features/auth/use-idle-logout";
@@ -29,8 +29,8 @@ export function DashboardShell({
   role,
   title,
 }: DashboardShellProps) {
-  const router = useRouter();
   const { ready, user } = useAuthGuard(allowedRoles ?? role);
+  const [leaving, setLeaving] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -43,10 +43,14 @@ export function DashboardShell({
   }, []);
 
   const handleLogout = useCallback(() => {
+    if (leaving) return;
     setSidebarOpen(false);
-    clearSession();
-    router.replace(appRoutes.home);
-  }, [router]);
+    setLeaving(true);
+    window.setTimeout(() => {
+      clearSession();
+      window.location.replace(appRoutes.home);
+    }, 850);
+  }, [leaving]);
 
   useIdleLogout(handleLogout);
 
@@ -55,7 +59,7 @@ export function DashboardShell({
   }
 
   return (
-    <main className="relative h-screen overflow-hidden bg-background text-foreground">
+    <main className="dashboard-theme relative h-screen overflow-hidden bg-background text-foreground">
       <AppBackground />
       <div className="relative grid h-screen w-full gap-0 lg:grid-cols-[320px_minmax(0,1fr)]">
         <DashboardSidebar
@@ -67,7 +71,7 @@ export function DashboardShell({
         />
 
         <section className="min-h-0 min-w-0 overflow-x-hidden overflow-y-auto px-5 py-6 md:px-8 xl:px-10">
-          <div className="sticky top-0 z-30 -mx-5 -mt-6 mb-5 flex items-center justify-between border-b border-border bg-white/90 px-5 py-3 backdrop-blur-xl md:-mx-8 md:px-8 lg:hidden">
+          <div className="sticky top-0 z-30 -mx-5 -mt-6 mb-5 flex items-center justify-between border-b border-border bg-violet-50/95 px-5 py-3 backdrop-blur-xl md:-mx-8 md:px-8 lg:hidden">
             <div>
               <p className="text-sm font-extrabold">My Exam</p>
               <p className="text-xs font-medium text-muted">{eyebrow}</p>
@@ -83,8 +87,7 @@ export function DashboardShell({
               <Menu className="h-5 w-5" />
             </button>
           </div>
-          <header className="relative mb-6 overflow-hidden rounded-lg border border-violet-400/30 bg-[#5b21b6] p-6 text-white shadow-sm">
-            <div className="absolute inset-y-0 right-0 w-1/3 border-l border-white/10 bg-white/5" />
+          <header className="relative mb-6 overflow-hidden rounded-lg border border-violet-400/30 bg-primary p-6 text-white shadow-sm">
             <div className="relative">
               <p className="text-sm font-bold uppercase tracking-wide text-violet-200">
                 {eyebrow}
@@ -111,6 +114,7 @@ export function DashboardShell({
         user={user}
       />
       {role !== "ADMIN" ? <FloatingContact /> : null}
+      {leaving ? <AuthTransitionOverlay action="logout" /> : null}
     </main>
   );
 }
@@ -119,7 +123,7 @@ function LoadingDashboard() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="rounded-lg border border-border bg-surface p-6 text-sm font-semibold text-muted shadow-sm">
-        <Menu className="mx-auto mb-3 h-6 w-6 text-secondary" />
+        <Menu className="mx-auto mb-3 h-6 w-6 text-primary" />
         Menyiapkan dashboard...
       </div>
     </main>
