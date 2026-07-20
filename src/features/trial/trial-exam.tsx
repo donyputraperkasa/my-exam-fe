@@ -59,6 +59,7 @@ export function TrialExam({ embedded = false }: TrialExamProps) {
             <TrialResult
               isAuthenticated={trial.isAuthenticated}
               isSubscribed={trial.isSubscribed}
+              onRegisterClick={trial.trackRegisterClick}
               onRetry={trial.resetTrial}
               result={trial.result}
             />

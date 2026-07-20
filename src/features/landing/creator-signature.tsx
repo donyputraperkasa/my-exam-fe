@@ -22,7 +22,7 @@ export function CreatorSignature({
       <span className="absolute inset-x-8 top-0 h-px bg-accent opacity-80" />
       <span className="flex items-center gap-2 font-semibold text-primary">
         <Sparkles className="h-4 w-4 text-accent" />
-        My Exam v1.1.0 Beta
+        My Exam v1.5.0 Beta
       </span>
       <Dot />
       <span>created by</span>

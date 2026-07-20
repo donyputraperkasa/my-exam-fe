@@ -5,6 +5,7 @@ import type { AuthResponse, AuthUser, StudentGrade } from "@/types/auth";
 const TOKEN_KEY = "my-exam-token";
 const USER_KEY = "my-exam-user";
 const GRADE_KEY = "my-exam-grade";
+export const ACTIVITY_KEY = "my-exam-last-activity";
 
 export function saveSession(session: AuthResponse) {
   if (typeof window === "undefined") {
@@ -13,6 +14,7 @@ export function saveSession(session: AuthResponse) {
 
   localStorage.setItem(TOKEN_KEY, session.accessToken);
   localStorage.setItem(USER_KEY, JSON.stringify(session.user));
+  recordSessionActivity();
 }
 
 export function getToken() {
@@ -66,4 +68,16 @@ export function clearSession() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
   localStorage.removeItem(GRADE_KEY);
+  localStorage.removeItem(ACTIVITY_KEY);
+}
+
+export function recordSessionActivity(at = Date.now()) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(ACTIVITY_KEY, String(at));
+}
+
+export function getLastSessionActivity() {
+  if (typeof window === "undefined") return null;
+  const value = Number(localStorage.getItem(ACTIVITY_KEY));
+  return Number.isFinite(value) && value > 0 ? value : null;
 }

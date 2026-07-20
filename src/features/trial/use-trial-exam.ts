@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { getToken } from "@/features/auth/session";
 import {
+  completePublicTrialAnalytics,
+  startPublicTrialAnalytics,
+  trackPublicRegisterClick,
+} from "@/features/analytics/public-trial-analytics";
+import {
   fetchPublicTrialQuestions,
   fetchStudentTrialAccess,
   submitStudentTrial,
@@ -19,6 +24,10 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
   const [result, setResult] = useState<TrialScore | null>(null);
   const [seconds, setSeconds] = useState(600);
   const activeQuestion = questions[current];
+
+  useEffect(() => {
+    if (!studentFlow) void startPublicTrialAnalytics();
+  }, [studentFlow]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -71,6 +80,7 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
   async function submitTrial() {
     // Alur publik dihitung seluruhnya di browser dan tidak meninggalkan data BE.
     if (!studentFlow || !isRemote || !token) {
+      if (!studentFlow) void completePublicTrialAnalytics(localResult);
       setResult(localResult);
       return;
     }
@@ -89,6 +99,7 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
     setCurrent(0);
     setResult(null);
     setSeconds(600);
+    if (!studentFlow) void startPublicTrialAnalytics(true);
   }
 
   return {
@@ -108,6 +119,7 @@ export function useTrialExam({ studentFlow }: { studentFlow: boolean }) {
     setCurrent,
     setup,
     submitTrial,
+    trackRegisterClick: () => void trackPublicRegisterClick(),
   };
 }
 

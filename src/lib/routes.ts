@@ -7,6 +7,7 @@ export const appRoutes = {
   },
   admin: {
     dashboard: "/admin",
+    analytics: "/admin/analytics",
     grades: "/admin/grades",
     subjects: "/admin/subjects",
     questions: "/admin/questions",

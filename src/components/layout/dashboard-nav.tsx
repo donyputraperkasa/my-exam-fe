@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ChartNoAxesCombined,
+  ChartSpline,
   ClipboardList,
   CreditCard,
   Download,
@@ -32,6 +33,7 @@ type NavItem = {
 const navItems: Record<UserRole, NavItem[]> = {
   ADMIN: [
     { label: "Dashboard", href: appRoutes.admin.dashboard, Icon: LayoutDashboard },
+    { label: "Analytics", href: appRoutes.admin.analytics, Icon: ChartSpline },
     { label: "Buat kategori soal", href: appRoutes.admin.grades, Icon: ListTree },
     { label: "Soal dan pembahasan", href: appRoutes.admin.questions, Icon: FileQuestion },
     { label: "Subscription", href: appRoutes.admin.subscriptions, Icon: Users },

@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/api/client";
+import { getRegistrationAnalyticsContext } from "@/features/analytics/analytics-context";
 import type { AuthResponse } from "@/types/auth";
 
 type LoginPayload = {
@@ -23,8 +24,13 @@ export function login(payload: LoginPayload) {
 }
 
 export function register(payload: RegisterPayload) {
+  const analytics = getRegistrationAnalyticsContext();
   return apiFetch<AuthResponse>("/auth/register", {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      ...payload,
+      analyticsVisitorId: analytics.visitorId,
+      analyticsSessionId: analytics.sessionId,
+    }),
   });
 }

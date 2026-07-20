@@ -19,7 +19,12 @@ export type TrialResult = {
 };
 
 export type StudentRecapResponse = {
+  subscription: {
+    activeUntil: string | null;
+    isActive: boolean;
+  };
   summary: {
+    attemptTotal: number;
     submittedTotal: number;
     trialTotal: number;
     averageScore: number;

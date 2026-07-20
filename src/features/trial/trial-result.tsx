@@ -11,6 +11,7 @@ import type { TrialScore } from "./trial-types";
 type TrialResultProps = {
   isAuthenticated: boolean;
   isSubscribed: boolean;
+  onRegisterClick: () => void;
   onRetry: () => void;
   result: TrialScore;
 };
@@ -18,6 +19,7 @@ type TrialResultProps = {
 export function TrialResult({
   isAuthenticated,
   isSubscribed,
+  onRegisterClick,
   onRetry,
   result,
 }: TrialResultProps) {
@@ -79,7 +81,10 @@ export function TrialResult({
             ) : (
               <button
                 type="button"
-                onClick={() => setIsRegisterOpen(true)}
+                onClick={() => {
+                  onRegisterClick();
+                  setIsRegisterOpen(true);
+                }}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-black text-foreground transition hover:bg-primary hover:text-white"
               >
                 <LockKeyhole className="h-4 w-4" />
