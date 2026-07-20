@@ -54,11 +54,11 @@ export function PublicTeacherExamEntry({ shareToken }: PublicTeacherExamEntryPro
   }
 
   return (
-    <main className="min-h-screen bg-background px-5 py-8 text-foreground">
+    <main className="min-h-screen bg-background px-4 py-5 text-foreground sm:px-5 sm:py-8">
       <section className="mx-auto grid w-full max-w-5xl gap-5 lg:grid-cols-[1fr_0.8fr]">
-        <div className="rounded-2xl border border-violet-100 bg-white/90 p-6 shadow-sm">
+        <div className="rounded-2xl border border-violet-100 bg-white/90 p-5 shadow-sm sm:p-6">
           <p className="text-sm font-black uppercase text-pink-400">Mode ujian</p>
-          <h1 className="mt-3 text-4xl font-black">{exam?.title ?? "Memuat ujian..."}</h1>
+          <h1 className="mt-3 break-words text-3xl font-black sm:text-4xl">{exam?.title ?? "Memuat ujian..."}</h1>
           <p className="mt-3 text-sm font-bold leading-6 text-muted">
             {loading ? "Menyiapkan halaman ujian." : exam?.description ?? "Isi data peserta untuk mulai mengerjakan."}
           </p>
@@ -72,7 +72,7 @@ export function PublicTeacherExamEntry({ shareToken }: PublicTeacherExamEntryPro
             </span>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-violet-100 bg-white/90 p-6 shadow-sm">
+        <form onSubmit={handleSubmit} className="rounded-2xl border border-violet-100 bg-white/90 p-5 shadow-sm sm:p-6">
           <LockKeyhole className="h-8 w-8 text-violet-500" />
           <h2 className="mt-3 text-2xl font-black">Masuk ujian</h2>
           <Input label="Nama siswa" value={name} onChange={setName} />

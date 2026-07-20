@@ -53,15 +53,16 @@ function QuestionCard({ editable, onDelete, onEdit, question }: {
       <p className="mt-2 text-sm font-bold text-muted">
         Kunci jawaban: {correct?.label ?? "-"}
       </p>
-      {editable ? (
-        <div className="mt-4 flex gap-2">
-          <button type="button" onClick={() => onEdit(question)} className="inline-flex h-9 flex-1 items-center justify-center gap-2 rounded-lg border border-violet-100 text-xs font-black text-violet-600">
+      <div className="mt-4 flex gap-2">
+          <button type="button" disabled={!editable} title={editable ? "Edit soal" : "Soal terkunci setelah peserta masuk"} onClick={() => onEdit(question)} className="inline-flex h-9 flex-1 items-center justify-center gap-2 rounded-lg border border-violet-100 text-xs font-black text-violet-600 disabled:cursor-not-allowed disabled:opacity-40">
             <Pencil className="h-3.5 w-3.5" /> Edit
           </button>
-          <button type="button" onClick={() => onDelete(question.id)} className="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-red-100 text-red-500" aria-label="Hapus soal">
+          <button type="button" disabled={!editable} title={editable ? "Hapus soal" : "Soal terkunci setelah peserta masuk"} onClick={() => onDelete(question.id)} className="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-red-100 text-red-500 disabled:cursor-not-allowed disabled:opacity-40" aria-label="Hapus soal">
             <Trash2 className="h-3.5 w-3.5" />
           </button>
         </div>
+      {!editable ? (
+        <p className="mt-2 text-xs font-bold text-muted">Terkunci karena peserta sudah masuk.</p>
       ) : null}
     </article>
   );

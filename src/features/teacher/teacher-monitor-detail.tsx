@@ -34,8 +34,10 @@ export function TeacherMonitorDetail({
       ) : null}
       <TeacherMonitorParticipants
         exam={monitor.selectedExam}
+        onUnblock={monitor.unblockParticipant}
         participants={monitor.participants}
         showTableWhenEmpty
+        unblockingId={monitor.unblockingId}
       />
       <p className="mt-4 text-sm font-semibold text-muted">
         Data peserta diperbarui otomatis setiap 5 detik.

@@ -89,6 +89,17 @@ export function getTeacherExamParticipants(examId: string, token: string) {
   );
 }
 
+export function unblockTeacherExamParticipant(
+  examId: string,
+  participantId: string,
+  token: string,
+) {
+  return apiFetch<TeacherExamParticipant>(
+    `/teacher-exams/${examId}/participants/${participantId}/unblock`,
+    { method: "PATCH", token },
+  );
+}
+
 export function createTeacherExam(
   payload: CreateTeacherExamPayload,
   token: string,

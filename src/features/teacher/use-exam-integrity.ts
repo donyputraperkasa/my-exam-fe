@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  getTeacherExamParticipantStatus,
   recordTeacherExamEvent,
   type TeacherExamEventType,
 } from "./public-api";
@@ -61,5 +62,19 @@ export function useExamIntegrity(participantToken: string, active: boolean) {
     };
   }, [active, participantToken]);
 
-  return blockedReason;
+  async function checkAccess() {
+    const participant = await getTeacherExamParticipantStatus(participantToken);
+    if (participant.status === "IN_PROGRESS") {
+      reported.current = false;
+      setBlockedReason("");
+      return true;
+    }
+
+    setBlockedReason(
+      participant.blockReason ?? "Guru belum mengizinkan ujian dilanjutkan.",
+    );
+    return false;
+  }
+
+  return { blockedReason, checkAccess };
 }

@@ -92,3 +92,9 @@ export function recordTeacherExamEvent(
     },
   );
 }
+
+export function getTeacherExamParticipantStatus(participantToken: string) {
+  return apiFetch<TeacherExamIntegrityResult>(
+    `/teacher-exams/participants/${participantToken}/status`,
+  );
+}

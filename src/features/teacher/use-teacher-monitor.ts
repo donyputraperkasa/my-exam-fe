@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getToken } from "@/features/auth/session";
 import {
   getTeacherExamParticipants,
   getTeacherExams,
+  unblockTeacherExamParticipant,
   type TeacherExam,
   type TeacherExamParticipant,
 } from "./api";
@@ -15,6 +16,7 @@ export function useTeacherMonitor(initialExamId = "") {
   const [loading, setLoading] = useState(true);
   const [participants, setParticipants] = useState<TeacherExamParticipant[]>([]);
   const [selectedExamId, setSelectedExamId] = useState(initialExamId);
+  const [unblockingId, setUnblockingId] = useState("");
   const selectedExam = useMemo(
     () => exams.find((exam) => exam.id === selectedExamId) ?? null,
     [exams, selectedExamId],
@@ -42,26 +44,48 @@ export function useTeacherMonitor(initialExamId = "") {
     void load();
   }, []);
 
-  useEffect(() => {
-    if (!selectedExamId) {
-      return;
-    }
+  const loadParticipants = useCallback(async () => {
+    const token = getToken();
+    if (!token || !selectedExamId) return;
 
-    async function loadParticipants() {
-      const token = getToken();
-      if (!token) {
-        return;
-      }
+    try {
       const data = await getTeacherExamParticipants(selectedExamId, token);
       setParticipants(data);
+      setError("");
+    } catch (caughtError) {
+      setError(getError(caughtError, "Gagal memperbarui data peserta"));
     }
+  }, [selectedExamId]);
 
-    void loadParticipants();
+  useEffect(() => {
+    if (!selectedExamId) return;
+
+    const initialLoad = window.setTimeout(() => {
+      void loadParticipants();
+    }, 0);
     const interval = window.setInterval(() => {
       void loadParticipants();
     }, 5000);
-    return () => window.clearInterval(interval);
-  }, [selectedExamId]);
+    return () => {
+      window.clearTimeout(initialLoad);
+      window.clearInterval(interval);
+    };
+  }, [loadParticipants, selectedExamId]);
+
+  async function unblockParticipant(participantId: string) {
+    const token = getToken();
+    if (!token || !selectedExamId) return;
+
+    setUnblockingId(participantId);
+    try {
+      await unblockTeacherExamParticipant(selectedExamId, participantId, token);
+      await loadParticipants();
+    } catch (caughtError) {
+      setError(getError(caughtError, "Gagal mengizinkan peserta melanjutkan"));
+    } finally {
+      setUnblockingId("");
+    }
+  }
 
   return {
     error,
@@ -71,5 +95,11 @@ export function useTeacherMonitor(initialExamId = "") {
     selectedExam,
     selectedExamId,
     setSelectedExamId,
+    unblockParticipant,
+    unblockingId,
   };
+}
+
+function getError(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
 }
