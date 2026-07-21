@@ -85,12 +85,14 @@ export function LoginModal({
           <form onSubmit={handleSubmit} className="grid gap-4">
             <AuthField
               label="Email"
+              placeholder="nama@email.com"
               type="email"
               value={email}
               onChange={setEmail}
             />
             <AuthField
               label="Password"
+              placeholder="Minimal 6 karakter"
               type="password"
               value={password}
               onChange={setPassword}

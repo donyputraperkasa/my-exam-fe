@@ -22,7 +22,12 @@ type RegisterAccountFieldsProps = {
 export function RegisterAccountFields(props: RegisterAccountFieldsProps) {
   return (
     <>
-      <AuthField label="Nama" value={props.name} onChange={props.onNameChange} />
+      <AuthField
+        label="Nama"
+        placeholder="Contoh: Budi Santoso"
+        value={props.name}
+        onChange={props.onNameChange}
+      />
       <AccountTypeTabs {...props} />
       {props.accountType === "STUDENT" ? (
         <GradeSelect value={props.gradeId} onChange={props.onGradeChange} />
@@ -68,14 +73,21 @@ function TeacherFields({
 }: RegisterAccountFieldsProps) {
   return (
     <>
-      <AuthField label="Nama Sekolah" value={schoolName} onChange={onSchoolNameChange} />
+      <AuthField
+        label="Nama Sekolah"
+        placeholder="Contoh: SMP Negeri 1 Yogyakarta"
+        value={schoolName}
+        onChange={onSchoolNameChange}
+      />
       <AuthField
         label="Guru Mata Pelajaran"
+        placeholder="Contoh: Matematika"
         value={teacherSubject}
         onChange={onTeacherSubjectChange}
       />
       <AuthField
         label="Alamat Sekolah (Opsional)"
+        placeholder="Contoh: Jl. Pendidikan No. 10"
         value={schoolAddress}
         onChange={onSchoolAddressChange}
       />
