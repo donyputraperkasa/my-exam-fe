@@ -24,7 +24,7 @@ export function RegisterAccountFields(props: RegisterAccountFieldsProps) {
     <>
       <AuthField
         label="Nama"
-        placeholder="Contoh: Budi Santoso"
+        placeholder="Contoh: mas dondon"
         value={props.name}
         onChange={props.onNameChange}
       />
