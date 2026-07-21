@@ -7,8 +7,15 @@ export type ManualPaymentProduct =
   | "TEACHER_PUBLISH_CREDIT";
 export type ManualPaymentStatus = "PENDING" | "PAID" | "FAILED" | "EXPIRED";
 
+export type ManualPaymentBank = {
+  accountHolder: string;
+  accountNumber: string;
+  name: string;
+};
+
 export type ManualPaymentConfig = {
-  bank: { accountHolder: string; accountNumber: string; name: string };
+  bank: ManualPaymentBank;
+  banks?: ManualPaymentBank[];
   configured: boolean;
   products: Array<{ amount: number; id: ManualPaymentProduct; label: string }>;
 };

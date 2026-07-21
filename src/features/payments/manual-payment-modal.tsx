@@ -2,6 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import { Landmark, Upload, X } from "lucide-react";
+import { ManualPaymentBankList } from "./manual-payment-bank-list";
+import { ManualPaymentProofField } from "./manual-payment-proof-field";
 import type {
   ManualPaymentConfig,
   ManualPaymentProduct,
@@ -21,7 +23,15 @@ export function ManualPaymentModal(props: ManualPaymentModalProps) {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   if (!props.open || !props.product) return null;
-  const item = props.config?.products.find((product) => product.id === props.product);
+  const item = props.config?.products.find(
+    (product) => product.id === props.product,
+  );
+
+  function close() {
+    setFile(undefined);
+    setError("");
+    props.onClose();
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,22 +40,32 @@ export function ManualPaymentModal(props: ManualPaymentModalProps) {
     setError("");
     try {
       await props.onSubmit(props.product, file);
-      props.onClose();
+      close();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Gagal mengirim pembayaran");
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Gagal mengirim pembayaran",
+      );
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <div onMouseDown={(event) => event.target === event.currentTarget && props.onClose()} className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-5 backdrop-blur-sm">
-      <form onSubmit={submit} className="w-full max-w-lg rounded-2xl border border-violet-100 bg-white p-6 shadow-2xl">
+    <div
+      onMouseDown={(event) => event.target === event.currentTarget && close()}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-3 backdrop-blur-sm sm:p-5"
+    >
+      <form
+        onSubmit={submit}
+        className="max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-violet-100 bg-white p-5 shadow-2xl sm:max-h-[calc(100dvh-2.5rem)] sm:p-6"
+      >
         <div className="flex items-start justify-between gap-4">
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
             <Landmark className="h-6 w-6" />
           </span>
-          <button type="button" onClick={props.onClose} aria-label="Tutup modal">
+          <button type="button" onClick={close} aria-label="Tutup modal">
             <X className="h-6 w-6 text-muted" />
           </button>
         </div>
@@ -55,23 +75,24 @@ export function ManualPaymentModal(props: ManualPaymentModalProps) {
           {formatRupiah(item?.amount ?? 0)}
         </p>
         {props.config?.configured ? (
-          <div className="mt-5 rounded-xl bg-background/70 p-4 text-sm font-bold leading-7">
-            <p>{props.config.bank.name}</p>
-            <p className="text-xl font-black">{props.config.bank.accountNumber}</p>
-            <p>a.n. {props.config.bank.accountHolder}</p>
-          </div>
+          <ManualPaymentBankList config={props.config} />
         ) : (
           <p className="mt-5 rounded-xl bg-red-50 p-4 text-sm font-bold text-red-500">
             Rekening belum diatur oleh admin.
           </p>
         )}
-        <label className="mt-5 grid gap-2 text-sm font-black">
-          Foto bukti transfer
-          <input type="file" accept="image/*" onChange={(event) => setFile(event.target.files?.[0])} className="rounded-xl border border-violet-100 p-3" />
-        </label>
+        <ManualPaymentProofField
+          file={file}
+          onChange={setFile}
+          onError={setError}
+        />
         {error ? <p className="mt-3 text-sm font-bold text-red-500">{error}</p> : null}
-        <button disabled={saving || !props.config?.configured} className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-black disabled:opacity-50">
-          <Upload className="h-4 w-4" /> {saving ? "Mengirim..." : "Kirim untuk Direview"}
+        <button
+          disabled={saving || !props.config?.configured}
+          className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-black text-white hover:bg-accent/80 disabled:opacity-50"
+        >
+          <Upload className="h-4 w-4" />
+          {saving ? "Mengirim..." : "Kirim untuk Direview"}
         </button>
       </form>
     </div>

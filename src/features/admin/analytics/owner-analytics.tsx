@@ -42,28 +42,45 @@ export function OwnerAnalytics() {
   }
 
   return (
-    <>
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p className="text-sm font-black uppercase text-secondary">Pertumbuhan My Exam</p>
-          <p className="mt-1 text-sm font-semibold text-muted">Pantau pengguna dari coba gratis sampai pembayaran.</p>
+    <div className="min-w-0">
+      <div className="mb-5 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <p className="text-sm font-black uppercase text-secondary">
+            Pertumbuhan My Exam
+          </p>
+          <p className="mt-1 text-sm font-semibold leading-6 text-muted">
+            Pantau pengguna dari coba gratis sampai pembayaran.
+          </p>
         </div>
-        <div className="inline-flex rounded-lg border border-violet-100 bg-white p-1 shadow-sm">
+        <div className="grid w-full grid-cols-3 rounded-lg border border-violet-100 bg-white p-1 shadow-sm sm:w-auto">
           {periods.map((period) => (
             <button
               key={period}
               type="button"
               onClick={() => selectPeriod(period)}
-              className={`rounded-md px-4 py-2 text-sm font-black transition ${days === period ? "bg-primary text-white" : "text-muted hover:bg-violet-50"}`}
+              className={`whitespace-nowrap rounded-md px-2 py-2 text-xs font-black transition sm:px-4 sm:text-sm ${days === period ? "bg-primary text-white" : "text-muted hover:bg-violet-50"}`}
             >
               {period} hari
             </button>
           ))}
         </div>
       </div>
-      {error ? <p className="rounded-lg border border-red-200 bg-red-50 p-4 font-bold text-red-600">{error}</p> : null}
-      {!summary && !error ? <p className="rounded-lg bg-white p-5 font-bold text-muted">Memuat analytics...</p> : null}
-      {summary ? <><AnalyticsMetrics summary={summary} /><AnalyticsFunnel summary={summary} /></> : null}
-    </>
+      {error ? (
+        <p className="break-words rounded-lg border border-red-200 bg-red-50 p-4 font-bold text-red-600">
+          {error}
+        </p>
+      ) : null}
+      {!summary && !error ? (
+        <p className="rounded-lg bg-white p-5 font-bold text-muted">
+          Memuat analytics...
+        </p>
+      ) : null}
+      {summary ? (
+        <>
+          <AnalyticsMetrics summary={summary} />
+          <AnalyticsFunnel summary={summary} />
+        </>
+      ) : null}
+    </div>
   );
 }
