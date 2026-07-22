@@ -1,7 +1,9 @@
 const apiBaseUrl =
-  process.env.NEXT_PUBLIC_API_URL ??
-  process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "http://localhost:4000";
+  process.env.NODE_ENV === "development"
+    ? (process.env.NEXT_PUBLIC_DEV_API_URL ?? "http://localhost:4000")
+    : (process.env.NEXT_PUBLIC_API_URL ??
+      process.env.NEXT_PUBLIC_API_BASE_URL ??
+      "http://localhost:4000");
 
 function normalizeApiBaseUrl(value: string) {
   const normalized = value.trim().replace(/\/$/, "");

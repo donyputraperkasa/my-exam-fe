@@ -17,6 +17,7 @@ import {
   Video,
   Users,
   UsersRound,
+  WalletCards,
   type LucideIcon,
 } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
@@ -34,6 +35,7 @@ const navItems: Record<UserRole, NavItem[]> = {
   ADMIN: [
     { label: "Dashboard", href: appRoutes.admin.dashboard, Icon: LayoutDashboard },
     { label: "Analytics", href: appRoutes.admin.analytics, Icon: ChartSpline },
+    { label: "Laporan Keuangan", href: appRoutes.admin.finance, Icon: WalletCards },
     { label: "Buat kategori soal", href: appRoutes.admin.grades, Icon: ListTree },
     { label: "Soal dan pembahasan", href: appRoutes.admin.questions, Icon: FileQuestion },
     { label: "Subscription", href: appRoutes.admin.subscriptions, Icon: Users },
